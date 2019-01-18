@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class Shot {
 
+	public GameObject DefaultCameraPrefab; // prefab reference (set in inspector)
+
 	private string name;
 	private string id; // XR Item ID of this Shot
 	private Camera camera;
@@ -20,6 +22,16 @@ public class Shot {
 		this.name = name;
 		this.id = id;
 		this.camera = camera;
+
+		// Create camera if does not exist
+		if (this.camera == null) {
+			this.camera = Instantiate(DefaultCameraPrefab).GetComponent<Camera>();
+		}
+
+		// Add XRItem if does not exist
+		if (this.id == null) {
+			this.id = gameObject.AddComponent(typeof(XRWorldItem)) as XRItem;
+		}
 	}
 
 	public string GetName() {
