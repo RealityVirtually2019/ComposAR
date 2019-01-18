@@ -1,0 +1,32 @@
+fileFormatVersion: 2
+guid: dc9fd7265628f4dec866c8eb5a8f56ca
+timeCreated: 1502413885
+licenseType: Pro
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - _Alert: {fileID: 114000012817421722, guid: 061b2c14f6479421c936680b269edcbe, type: 2}
+  - _BetaScreen: {fileID: 114159540030014912, guid: 69e7ecc609eff40d98e77861b73e241d,
+      type: 2}
+  - _VideoDemoScreen: {fileID: 114342485938234752, guid: 4e8573dbdde4345c6aa1539824660d4d,
+      type: 2}
+  - _SplashScreen: {fileID: 114000011483615642, guid: bc944875ac836402a9548161da653aac,
+      type: 2}
+  - _CountdownScreen: {fileID: 114561468821011436, guid: aa708c53d24624d9b86b6a80f3cbb10b,
+      type: 2}
+  - _VibrationController: {fileID: 114873764576845474, guid: 9d70bcff5c1084fa791bf21763ac0e8f,
+      type: 2}
+  - SharedCanvas: {instanceID: 0}
+  - EnergyBarController: {instanceID: 0}
+  - ReactiveReticle: {instanceID: 0}
+  - SoundSelect: {fileID: 8300000, guid: 1fdbed67b9a7d40a9bf5cf777cbe014c, type: 3}
+  - SoundLaser: {fileID: 8300000, guid: 8c82b1f559adf4783af2951d6520b665, type: 3}
+  - SoundCharge: {fileID: 8300000, guid: e00786400342f41d5b1b802937a5834f, type: 3}
+  - AudioSourceLobby: {instanceID: 0}
+  - AudioSourceBattle: {instanceID: 0}
+  - AudioSourceSound: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
