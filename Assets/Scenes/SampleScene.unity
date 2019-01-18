@@ -261,7 +261,7 @@ Prefab:
     - target: {fileID: 114374907198463900, guid: df816585cecdb450b862e9309b3fb3f3,
         type: 2}
       propertyPath: Id
-      value: yeetboards
+      value: composar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df816585cecdb450b862e9309b3fb3f3, type: 2}
