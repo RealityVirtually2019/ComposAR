@@ -113,89 +113,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &516648705
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
-        type: 2}
-      propertyPath: SharedCanvas
-      value: 
-      objectReference: {fileID: 1797830384}
-    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
-        type: 2}
-      propertyPath: ReactiveReticle
-      value: 
-      objectReference: {fileID: 1797830383}
-    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
-        type: 2}
-      propertyPath: MainTextField
-      value: 
-      objectReference: {fileID: 1797830382}
-    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
-        type: 2}
-      propertyPath: AudioSourceLobby
-      value: 
-      objectReference: {fileID: 1797830381}
-    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
-        type: 2}
-      propertyPath: AudioSourceBattle
-      value: 
-      objectReference: {fileID: 1797830380}
-    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
-        type: 2}
-      propertyPath: AudioSourceSound
-      value: 
-      objectReference: {fileID: 1797830379}
-    - target: {fileID: 114054194742936214, guid: 66def328e562d47ac9d1dcd1d92429e6,
-        type: 2}
-      propertyPath: GoogleArcoreCamera
-      value: 
-      objectReference: {fileID: 1665281624}
-    - target: {fileID: 114054194742936214, guid: 66def328e562d47ac9d1dcd1d92429e6,
-        type: 2}
-      propertyPath: SteamVrCamera
-      value: 
-      objectReference: {fileID: 1665281623}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
-  m_IsPrefabAsset: 0
---- !u!43 &567843224
+--- !u!43 &348141
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -392,7 +310,7 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f03aeca00c9734e93bd4027d0fb6beec, type: 2}
   m_IsPrefabAsset: 0
---- !u!21 &1557845926
+--- !u!21 &1070848026
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -467,6 +385,88 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 223349249653567654, guid: f03aeca00c9734e93bd4027d0fb6beec,
     type: 2}
   m_PrefabInternal: {fileID: 1014032005}
+--- !u!1001 &2077117830
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069579991484164, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114054194742936214, guid: 66def328e562d47ac9d1dcd1d92429e6,
+        type: 2}
+      propertyPath: GoogleArcoreCamera
+      value: 
+      objectReference: {fileID: 1665281624}
+    - target: {fileID: 114054194742936214, guid: 66def328e562d47ac9d1dcd1d92429e6,
+        type: 2}
+      propertyPath: SteamVrCamera
+      value: 
+      objectReference: {fileID: 1665281623}
+    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
+        type: 2}
+      propertyPath: SharedCanvas
+      value: 
+      objectReference: {fileID: 1797830384}
+    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
+        type: 2}
+      propertyPath: ReactiveReticle
+      value: 
+      objectReference: {fileID: 1797830383}
+    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
+        type: 2}
+      propertyPath: MainTextField
+      value: 
+      objectReference: {fileID: 1797830382}
+    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
+        type: 2}
+      propertyPath: AudioSourceLobby
+      value: 
+      objectReference: {fileID: 1797830381}
+    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
+        type: 2}
+      propertyPath: AudioSourceBattle
+      value: 
+      objectReference: {fileID: 1797830380}
+    - target: {fileID: 114429735037924604, guid: 66def328e562d47ac9d1dcd1d92429e6,
+        type: 2}
+      propertyPath: AudioSourceSound
+      value: 
+      objectReference: {fileID: 1797830379}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 66def328e562d47ac9d1dcd1d92429e6, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1001 &2080744476
 Prefab:
   m_ObjectHideFlags: 0
@@ -510,12 +510,12 @@ Prefab:
         type: 2}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 567843224}
+      objectReference: {fileID: 348141}
     - target: {fileID: 23618612283669788, guid: ae7ef30c673b94152a894df23fb417ea,
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1557845926}
+      objectReference: {fileID: 1070848026}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae7ef30c673b94152a894df23fb417ea, type: 2}
   m_IsPrefabAsset: 0
