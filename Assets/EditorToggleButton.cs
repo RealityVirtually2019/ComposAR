@@ -11,7 +11,7 @@ public class EditorToggleButton : MonoBehaviour {
     public float maxScale = 5;
 
     private EditorMode mode = EditorMode.Unselected;
-    private GameObject selectedObject;
+    private XRItem selectedItem;
     private bool isMovingObject;
 
     public GameObject floor;
@@ -41,7 +41,7 @@ public class EditorToggleButton : MonoBehaviour {
 
         if (isMovingObject) {
             // place object 
-            if (selectedObject == null) {
+            if (selectedItem.gameObject == null) {
                 return;
             }
 
@@ -49,10 +49,9 @@ public class EditorToggleButton : MonoBehaviour {
         } else {
             // pickup object
 
-            // TODO: in teleportal: selectedObject = XRItemRaycaster.Shared.ItemFocus.gameObject;
-            selectedObject = GameObject.Find("Cube");
+            selectedItem = XRItemRaycaster.Shared.ItemFocus;
 
-            if (selectedObject == null) {
+            if (selectedItem.gameObject == null) {
                 return;
             }
 
@@ -68,14 +67,12 @@ public class EditorToggleButton : MonoBehaviour {
         // gameObject.color = color;
 
         if (isMoving) {
-            // Transform cameraTransform = TeleportalAr.Shared.CurrentCamera.gameObject.transform;
-            Transform cameraTransform = Camera.main.transform;
-            selectedObject.transform.SetParent(cameraTransform);
-            selectedObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            TeleportalAr.Shared.HoldItem(selectedItem);
+            selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
         } else {
-            selectedObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            selectedObject.transform.SetParent(floor.transform);
-            selectedObject = null;
+            selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            TeleportalAr.Shared.ReleaseItem(selectedItem);
+            selectedItem = null;
         }
     }
 
@@ -85,7 +82,7 @@ public class EditorToggleButton : MonoBehaviour {
         if (mode == EditorMode.Unselected) {
             floor.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
         } else {
-            selectedObject.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
+            selectedItem.gameObject.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
         }
     }
     public void RotateValueChange() {
@@ -99,7 +96,7 @@ public class EditorToggleButton : MonoBehaviour {
         if (mode == EditorMode.Unselected) {
             floor.transform.eulerAngles = rotationVector;
         } else {
-            selectedObject.transform.eulerAngles = rotationVector;
+            selectedItem.gameObject.transform.eulerAngles = rotationVector;
         }
     }
 
@@ -108,7 +105,7 @@ public class EditorToggleButton : MonoBehaviour {
 
     //     float newValue;
         
-    //     Transform transform = mode == EditorMode.Unselected ? floor.transform : selectedObject.transform;
+    //     Transform transform = mode == EditorMode.Unselected ? floor.transform : selectedItem.gameObject.transform;
 
     //     if (rotationMode == RotationMode.X) {
     //         newValue = transform.eulerAngles.x;
