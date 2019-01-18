@@ -17,7 +17,7 @@ public class XRItemRaycaster : MonoBehaviour
 	/// <summary>
 	/// The current targeted/focused XRItem.
 	/// </summary>
-	XRItem ItemFocus;
+	public XRItem ItemFocus;
 
 	/// <summary>
 	/// The Player Item that is currently being targeted by the reticle.
