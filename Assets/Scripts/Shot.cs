@@ -10,27 +10,27 @@ public class Shot {
 	public GameObject DefaultCameraPrefab; // prefab reference (set in inspector)
 
 	private string name;
-	private string id; // XR Item ID of this Shot
+	private XRItem XRI;
 	private Camera camera;
 
 	public Shot() : this("0") {}
 
 	public Shot(string name) : this(name, null, null) {}
 
-	public Shot(string name, string id, Camera camera) {
+	public Shot(string name, XRItem item, Camera camera) {
 		// Set variables
 		this.name = name;
-		this.id = id;
+		this.XRI = item;
 		this.camera = camera;
 
 		// Create camera if does not exist
 		if (this.camera == null) {
-			this.camera = Instantiate(DefaultCameraPrefab).GetComponent<Camera>();
+			this.camera = GameObject.Instantiate(DefaultCameraPrefab).GetComponent<Camera>();
 		}
 
 		// Add XRItem if does not exist
-		if (this.id == null) {
-			this.id = gameObject.AddComponent(typeof(XRWorldItem)) as XRItem;
+		if (this.XRI == null) {
+			this.XRI = this.camera.gameObject.AddComponent(typeof(XRWorldItem)) as XRItem;
 		}
 	}
 
@@ -38,28 +38,32 @@ public class Shot {
 		return this.name;
 	}
 
+	public void SetName(string name) {
+		this.name = name;
+	}
+
+	public XRItem GetXRItem() {
+		return this.XRI;
+	}
+
+	public void SetXRItem(XRItem item) {
+		this.XRI = item;
+	}
+
 	public string GetId() {
-		return this.id;
+		return this.XRI.Id;
 	}
 
 	public Camera GetCamera() {
 		return this.camera;
 	}
 
+	public void SetCamera(Camera camera) {
+		this.camera = camera;
+	}
+
 	public Transform GetTransform() {
 		return this.camera.gameObject.transform;
-	}
-
-	public Vector3 GetPosition() {
-		return this.GetTransform().position;
-	}
-
-	public Vector3 GetRotation() {
-		return this.GetTransform().eulerAngles;
-	}
-
-	public Vector3 GetScale() {
-		return this.GetTransform().localScale;
 	}
 
 	public string GetSerializedTransform() {

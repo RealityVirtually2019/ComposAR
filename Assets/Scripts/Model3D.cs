@@ -11,24 +11,30 @@ public enum Model3DType {
 
 public class Model3D {
 
-    private string id; // XR Item ID of this Model3D
+    private XRItem XRI;
     private string filePath;
     private Model3DType type;
 
-    public Model3D() : this("0", null, Model3DType.Environment) {}
+    public Model3D() : this(null, null, Model3DType.Environment) {}
 
-    public Model3D(string id, string filePath, Model3DType type) {
-        this.id = id;
+    public Model3D(XRItem item, string filePath, Model3DType type) {
+        this.XRI = item;
         this.filePath = filePath;
         this.type = type;
-    }
-    
-    public string GetId() {
-        return this.id;
+
+        // TODO spawn object if not null
     }
 
-    public void SetId(string id) {
-        this.id = id;
+    public XRItem GetXRItem() {
+        return this.XRI;
+    }
+
+    public void SetXRItem(XRItem item) {
+        this.XRI = item;
+    }
+
+    public string GetId() {
+        return this.XRI.Id;
     }
 
     public Model3DType GetType() {
