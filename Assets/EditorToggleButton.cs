@@ -68,8 +68,9 @@ public class EditorToggleButton : MonoBehaviour {
         // gameObject.color = color;
 
         if (isMoving) {
-            // TODO: in teleportal: Transform cameraTransform = TeleportalAr.Shared.CurrentCamera.gameObject.transform;
-            selectedObject.transform.SetParent(Camera.main.transform);
+            // Transform cameraTransform = TeleportalAr.Shared.CurrentCamera.gameObject.transform;
+            Transform cameraTransform = Camera.main.transform;
+            selectedObject.transform.SetParent(cameraTransform);
             selectedObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
         } else {
             selectedObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
