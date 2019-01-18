@@ -48,17 +48,8 @@ public class Shot {
 	}
 
 	public string GetSerializedTransform() {
-		string data = "";
-
-		Vector3 pos = this.GetPosition();
-		Vector3 rot = this.GetRotation();
-		Vector3 scale = this.GetScale();
-
-		data += pos.x + "," + pos.y + "," + pos.z + "/";
-		data += rot.x + "," + rot.y + "," + rot.z + "/";
-		data += scale.x + "," + scale.y + "," + scale.z;
-
-		return data;
+		// Get from helper class
+		return ComposarHelper.SerializeTransform(this.GetTransform());
 	}
 
 }
