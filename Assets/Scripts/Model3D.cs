@@ -11,7 +11,7 @@ public enum Model3DType {
 
 public class Model3D {
 
-    private string id; // XR Item ID of this Shot
+    private string id; // XR Item ID of this Model3D
     private string filePath;
     private Model3DType type;
 

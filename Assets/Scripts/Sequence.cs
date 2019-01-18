@@ -11,7 +11,9 @@ public class Sequence {
 	public int timestamp;
 	private List<Shot> shots;
 
-	public Sequence() : this("New Sequence", 0) {}
+	public Sequence() : this("New Sequence") {}
+
+	public Sequence(string name) : this(name, 0) {}
 
 	public Sequence(string name, int timestamp) {
 		this.name = name;

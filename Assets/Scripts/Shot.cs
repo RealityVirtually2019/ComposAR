@@ -11,9 +11,12 @@ public class Shot {
 	private string id; // XR Item ID of this Shot
 	private Camera camera;
 
-	public Shot() : this("0", null, null) {}
+	public Shot() : this("0") {}
+
+	public Shot(string name) : this(name, null, null) {}
 
 	public Shot(string name, string id, Camera camera) {
+		// Set variables
 		this.name = name;
 		this.id = id;
 		this.camera = camera;
