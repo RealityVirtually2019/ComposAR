@@ -18,6 +18,15 @@ public class ComposarStateManager : MonoBehaviour {
 
 	void Start() {
 		this.ChangeScene("Project");
+
+		// TMP test
+		StartCoroutine(DelayStartSceneIE());
+	}
+
+	// TMP
+	private IEnumerator DelayStartSceneIE() {
+		yield return new WaitForSeconds(2.0f);
+		this.ChangeScene("SampleScene");
 	}
 
 	public void AddProject(Project project) {
