@@ -9,6 +9,7 @@ public class ComposarCamera : MonoBehaviour {
 	void Start () {
 		this.rentex = new RenderTexture(256, 256, 16, RenderTextureFormat.ARGB32);
 		this.rentex.Create();
+		this.gameObject.transform.Find("camera").GetComponent<Camera>().targetTexture = this.rentex;
 	}
 
 	public RenderTexture GetRenderTexture() {

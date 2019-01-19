@@ -24,6 +24,7 @@ public class EditorToggleButton : MonoBehaviour {
     public Button selectButton;
     public Button duplicateButton;
     public Button deleteButton;
+    public Button exitButton;
 
     // camera options 
     public Button takeShotButton;
@@ -78,6 +79,8 @@ public class EditorToggleButton : MonoBehaviour {
             return; 
         }
 
+        bool showExitButton = false;
+
         // selected object controls 
         bool showScaleSlider = false;
         bool showRotateSlider = false;
@@ -93,11 +96,12 @@ public class EditorToggleButton : MonoBehaviour {
         bool showRawImage = false;
 
         if (newMode == EditorMode.None) {
-            // looking at nothing 
+            showExitButton = true;
         } else if (newMode == EditorMode.LookingAtObject) {
             showSelectButton = true;
             showDuplicateButton = true;
             showDeleteButton = true;
+            showExitButton = true;
         } else if (newMode == EditorMode.SelectedObject) {
             showSelectButton = true;
             showScaleSlider = true;
@@ -120,7 +124,7 @@ public class EditorToggleButton : MonoBehaviour {
             XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
 
             if (lookingAtItem != null) {
-                cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GrabImage();
+                cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GetRenderTexture();
             }
 
         }
@@ -136,6 +140,8 @@ public class EditorToggleButton : MonoBehaviour {
 
         cameraDisplay.gameObject.SetActive(showRawImage);
         takeShotButton.gameObject.SetActive(showTakeShotButton);
+
+        exitButton.gameObject.SetActive(showExitButton);
 
         currentEditMode = newMode;
     }
@@ -167,6 +173,18 @@ public class EditorToggleButton : MonoBehaviour {
 
     public void OnClickDuplicate() {
         // TODO: grab all children and new empty node with clones of each 
+    }
+
+    public void OnClickTakeShot() {
+        XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
+
+        if (lookingAtItem != null) {
+            // lookingAtItem.gameObject.GetComponent<ComposarCamera>().SaveImage();
+        }
+    }
+
+    public void OnClickExit() {
+        // TODO: tom 
     }
 
     private void setIsMoving(bool isMoving) {
