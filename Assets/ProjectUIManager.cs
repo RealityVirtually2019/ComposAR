@@ -36,8 +36,8 @@ public class ProjectUIManager : MonoBehaviour {
         //TODO tom
         //seqsDropdown.options = getSequences from app state
 
-        loadProjButton.onClick.AddListener(() => NewProjState());
-        newProjButton.onClick.AddListener(() => LoadProjState());
+        loadProjButton.onClick.AddListener(() => LoadProjState());
+        newProjButton.onClick.AddListener(() => NewProjState());
 
         cancelLoadProjButton.onClick.AddListener(() => Default());
         cancelNewProjButton.onClick.AddListener(() => Default());
