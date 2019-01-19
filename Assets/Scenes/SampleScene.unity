@@ -495,22 +495,22 @@ Prefab:
     - target: {fileID: 224189166261642200, guid: ce4c9f631d93c495d9de7160a55a52c3,
         type: 2}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 224189166261642200, guid: ce4c9f631d93c495d9de7160a55a52c3,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 114488722135440004, guid: ce4c9f631d93c495d9de7160a55a52c3,
         type: 2}
       propertyPath: m_Value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224927574818073890, guid: ce4c9f631d93c495d9de7160a55a52c3,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce4c9f631d93c495d9de7160a55a52c3, type: 2}
