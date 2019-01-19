@@ -1,4 +1,4 @@
-﻿/// ComposAR @ MIT Reality Virtually Hacakthon 2019 ///
+﻿/// animaid @ MIT Reality Virtually Hacakthon 2019 ///
 /// Thomas Suarez, Matt Kelsey, Ryan Reede, Sam Roquitte, Nick Grana ///
 
 using System.Collections;
@@ -10,6 +10,7 @@ public class Sequence {
 	public string name;
 	public int timestamp;
 	private List<Shot> shots;
+    private List<Model3D> models;
 
 	public Sequence() : this("New Sequence") {}
 
