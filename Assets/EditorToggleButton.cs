@@ -25,7 +25,9 @@ public class EditorToggleButton : MonoBehaviour {
     public Button duplicateButton;
     public Button deleteButton;
 
-    // TODO: camera renderer/take show button 
+    // camera options 
+    public Button takeShotButton;
+    public RawImage cameraDisplay;
 
     public Text selectButtonText;
 
@@ -68,8 +70,6 @@ public class EditorToggleButton : MonoBehaviour {
             }
         }
 
-        Debug.Log("EditorMode: " + newEditorMode);
-
         setEditorMode(newEditorMode);
     }
 
@@ -89,6 +89,9 @@ public class EditorToggleButton : MonoBehaviour {
         bool showDuplicateButton = false;
         bool showDeleteButton = false;
         
+        bool showTakeShotButton = false;
+        bool showRawImage = false;
+
         if (newMode == EditorMode.None) {
             // looking at nothing 
         } else if (newMode == EditorMode.LookingAtObject) {
@@ -108,10 +111,18 @@ public class EditorToggleButton : MonoBehaviour {
                 ScaleDropdownValueChange();
             }
         } else if (newMode == EditorMode.Camera) {
-            // renderer, take shot, delete, select, duplicate 
             showSelectButton = true;
             showDuplicateButton = true;
             showDeleteButton = true;
+            showRawImage = true;
+            showTakeShotButton = true;
+
+            XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
+
+            if (lookingAtItem != null) {
+                cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GrabImage();
+            }
+
         }
 
         scaleSlider.gameObject.SetActive(showScaleSlider);
@@ -122,6 +133,9 @@ public class EditorToggleButton : MonoBehaviour {
         selectButton.gameObject.SetActive(showSelectButton);
         duplicateButton.gameObject.SetActive(showDuplicateButton);
         deleteButton.gameObject.SetActive(showDeleteButton);
+
+        cameraDisplay.gameObject.SetActive(showRawImage);
+        takeShotButton.gameObject.SetActive(showTakeShotButton);
 
         currentEditMode = newMode;
     }
@@ -144,14 +158,15 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     public void OnClickDelete() {
-        if (selectedItem != null) {
-            TeleportalAr.Shared.DeleteItem(selectedItem.Id);
+        XRItem item = XRItemRaycaster.Shared.ItemFocus;
+
+        if (item != null) {
+            TeleportalAr.Shared.DeleteItem(item.Id);
         }
     }
 
     public void OnClickDuplicate() {
         // TODO: grab all children and new empty node with clones of each 
-        // 
     }
 
     private void setIsMoving(bool isMoving) {
