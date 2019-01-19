@@ -71,7 +71,10 @@ public class EditorToggleButton : MonoBehaviour {
 
         if (isMoving) {
             selectButtonText.text = "Unselect";
-            TeleportalAr.Shared.HoldItem(selectedItem);
+            // prevent floor from being added 
+            if (!selectedItem.gameObject.name.Equals("Floor")) {
+                TeleportalAr.Shared.HoldItem(selectedItem);
+            }
             alpha = 0.5f;
         } else {
             selectButtonText.text = "Select";
