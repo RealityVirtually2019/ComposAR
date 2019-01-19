@@ -33,6 +33,12 @@ public class EditorToggleButton : MonoBehaviour {
         scaleSlider.gameObject.SetActive(shouldShow);
         rotateSlider.gameObject.SetActive(shouldShow);
         rotationDropdown.gameObject.SetActive(shouldShow);
+
+        // set values back 
+        if (selectedItem != null) {
+            DropdownValueChange();
+            scaleSlider.value = selectedItem.gameObject.transform.localScale.x;
+        }
     }
 
     // Menu Toggles
@@ -66,21 +72,23 @@ public class EditorToggleButton : MonoBehaviour {
         if (isMoving) {
             selectButtonText.text = "Unselect";
             TeleportalAr.Shared.HoldItem(selectedItem);
-            //selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
             alpha = 0.5f;
         } else {
             selectButtonText.text = "Select";
-            // selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             TeleportalAr.Shared.ReleaseItem(selectedItem);
             selectedItem.gameObject.transform.SetParent(null);
             selectedItem.gameObject.transform.SetParent(floor.transform);
-            selectedItem = null;
         }
 
         selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
         for (int i = 0; i < selectedItem.gameObject.transform.childCount; i++) {
             selectedItem.gameObject.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
         }
+        
+        if (!isMoving) {
+            selectedItem = null;
+        }
+
     }
 
     // Slider Changes
@@ -96,31 +104,37 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     public void RotateValueChange() {
+        if (selectedItem == null) {
+            return; 
+        }
+
         if (ignoreThisChange) {
             ignoreThisChange = false;
             return;
         }
 
         RotationMode rotationMode = getRotationMode();
+        Vector3 angles = selectedItem.gameObject.transform.eulerAngles;
 
         Vector3 rotationVector = new Vector3(
-                rotationMode == RotationMode.X ? rotateSlider.value : 0, 
-                rotationMode == RotationMode.Y ? rotateSlider.value : 0,
-                rotationMode == RotationMode.Z ? rotateSlider.value : 0);
+                rotationMode == RotationMode.X ? rotateSlider.value : angles.x, 
+                rotationMode == RotationMode.Y ? rotateSlider.value : angles.y,
+                rotationMode == RotationMode.Z ? rotateSlider.value : angles.z);
 
-        if (selectedItem != null) {
-            if (selectedItem.gameObject.name.Equals("Floor")) {
-                floor.transform.eulerAngles = rotationVector;
-            } else {
-                selectedItem.gameObject.transform.eulerAngles = rotationVector;
-            }
+        if (selectedItem.gameObject.name.Equals("Floor")) {
+            floor.transform.eulerAngles = rotationVector;
+        } else {
+            selectedItem.gameObject.transform.eulerAngles = rotationVector;
         }
     }
 
-    // TODO: select floor, affect all world
-    // TODO: nothing selected, disable menu
-    // TODO: transluecent for all children 
-    // TODO: let go is not being set back to prev parent  ?
+    // TODO: select floor, affect all world --done--
+    // TODO: nothing selected, disable menu --done--
+    // TODO: transluecent for all children --done--
+    // TODO: let go is not being set back to prev parent --done--
+    // TODO: on rotate, sets other axis to 0 --done--
+    // TOOD: opacity not being set back to full on let go --done--
+    // TODO: scale slider isnt being full or whatever
 
     bool ignoreThisChange = false;
     public void DropdownValueChange() {
