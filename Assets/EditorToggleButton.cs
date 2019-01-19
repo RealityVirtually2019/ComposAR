@@ -116,6 +116,13 @@ public class EditorToggleButton : MonoBehaviour {
             showDeleteButton = true;
             showRawImage = true;
             showTakeShotButton = true;
+
+            XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
+
+            if (lookingAtItem != null) {
+                cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GrabImage();
+            }
+
         }
 
         scaleSlider.gameObject.SetActive(showScaleSlider);
@@ -151,14 +158,15 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     public void OnClickDelete() {
-        if (selectedItem != null) {
-            TeleportalAr.Shared.DeleteItem(selectedItem.Id);
+        XRItem item = XRItemRaycaster.Shared.ItemFocus;
+
+        if (item != null) {
+            TeleportalAr.Shared.DeleteItem(item.Id);
         }
     }
 
     public void OnClickDuplicate() {
         // TODO: grab all children and new empty node with clones of each 
-        // 
     }
 
     private void setIsMoving(bool isMoving) {
