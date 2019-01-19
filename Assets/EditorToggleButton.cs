@@ -41,25 +41,19 @@ public class EditorToggleButton : MonoBehaviour {
 
         if (isMovingObject) {
             // place object 
-            if (selectedItem.gameObject == null) {
-                return;
-            }
-
             setIsMoving(false);
         } else {
             // pickup object
-
             selectedItem = XRItemRaycaster.Shared.ItemFocus;
-
-            if (selectedItem.gameObject == null) {
-                return;
-            }
-
             setIsMoving(true);
         }
     }
 
     private void setIsMoving(bool isMoving) {
+        if (selectedItem == null) {
+            return;
+        }
+
         isMovingObject = isMoving;
 
         // Color color = gameObject.color;
@@ -82,7 +76,9 @@ public class EditorToggleButton : MonoBehaviour {
         if (mode == EditorMode.Unselected) {
             floor.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
         } else {
-            selectedItem.gameObject.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
+            if (selectedItem != null) {
+                selectedItem.gameObject.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
+            }
         }
     }
     public void RotateValueChange() {
@@ -96,7 +92,9 @@ public class EditorToggleButton : MonoBehaviour {
         if (mode == EditorMode.Unselected) {
             floor.transform.eulerAngles = rotationVector;
         } else {
-            selectedItem.gameObject.transform.eulerAngles = rotationVector;
+            if (selectedItem != null) { 
+                selectedItem.gameObject.transform.eulerAngles = rotationVector;
+            }
         }
     }
 
