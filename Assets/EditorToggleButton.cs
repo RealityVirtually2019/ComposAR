@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-enum EditorMode { Scale, Rotate, Unselected };
 enum RotationMode { X, Y, Z }
 
 public class EditorToggleButton : MonoBehaviour {
 
     public float maxScale = 5;
 
-    private EditorMode mode = EditorMode.Unselected;
     private XRItem selectedItem;
     private bool isMovingObject;
 
@@ -34,17 +32,7 @@ public class EditorToggleButton : MonoBehaviour {
         TeleportalInventory.Shared.UseCurrent();
     }
 
-    public void OnClickScale() {
-        mode = EditorMode.Scale;
-    }
-
-    public void OnClickRotate() {
-        mode = EditorMode.Rotate;
-    }
-
     public void OnClickMove() {
-        print("Clicked Move.");
-
         if (isMovingObject) {
             // place object 
             setIsMoving(false);
@@ -82,12 +70,10 @@ public class EditorToggleButton : MonoBehaviour {
     // Slider Changes
 
     public void ScaleValueChange() {
-        if (mode == EditorMode.Unselected) {
+        if (selectedItem == null) {
             floor.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
         } else {
-            if (selectedItem != null) {
-                selectedItem.gameObject.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
-            }
+            selectedItem.gameObject.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
         }
     }
 
@@ -104,12 +90,10 @@ public class EditorToggleButton : MonoBehaviour {
                 rotationMode == RotationMode.Y ? rotateSlider.value : 0,
                 rotationMode == RotationMode.Z ? rotateSlider.value : 0);
 
-        if (mode == EditorMode.Unselected) {
+        if (selectedItem == null) {
             floor.transform.eulerAngles = rotationVector;
         } else {
-            if (selectedItem != null) { 
-                selectedItem.gameObject.transform.eulerAngles = rotationVector;
-            }
+            selectedItem.gameObject.transform.eulerAngles = rotationVector;
         }
     }
 
