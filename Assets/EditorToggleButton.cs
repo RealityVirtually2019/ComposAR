@@ -14,6 +14,10 @@ public class EditorToggleButton : MonoBehaviour {
 
     public GameObject floor;
 
+    // singleton reference
+    public static EditorToggleButton Shared;
+    public bool waitingForDuplication = false;
+
     // selectedobject items 
     public Slider scaleSlider;
     public Slider rotateSlider;
@@ -33,6 +37,10 @@ public class EditorToggleButton : MonoBehaviour {
     public Text selectButtonText;
 
     private EditorMode currentEditMode = EditorMode.SelectedObject;
+
+    void Awake() {
+        EditorToggleButton.Shared = this;
+    }
 
 	void Start () {
         scaleSlider.value = 1;
@@ -195,12 +203,16 @@ public class EditorToggleButton : MonoBehaviour {
         XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
 
         if (lookingAtItem != null) {
-            // lookingAtItem.gameObject.GetComponent<ComposarCamera>().SaveImage();
+            lookingAtItem.gameObject.GetComponent<ComposarCamera>().SaveImage();
         }
     }
 
     public void OnClickExit() {
         // TODO: tom 
+    }
+
+    public void OnDuplication(string id) {
+        // TODO: nick
     }
 
     private void setIsMoving(bool isMoving) {

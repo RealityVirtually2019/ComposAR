@@ -294,7 +294,7 @@ Prefab:
         type: 2}
       propertyPath: floor
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1964602097}
     - target: {fileID: 224253033572298194, guid: ce4c9f631d93c495d9de7160a55a52c3,
         type: 2}
       propertyPath: m_SizeDelta.x
@@ -451,3 +451,8 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df816585cecdb450b862e9309b3fb3f3, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1964602097 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1903887479775572, guid: fa0a1f0f0f979498d860f6c4d0437d4c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1274296891}
