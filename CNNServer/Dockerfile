@@ -12,6 +12,7 @@ RUN pip3 install flask
 RUN pip3 install scipy
 RUN pip3 install requests
 RUN pip3 install gevent
+RUN pip3 install Pillow
 
 # Extenal port to expose
 EXPOSE 5000
