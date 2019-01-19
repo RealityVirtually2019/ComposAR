@@ -70,13 +70,15 @@ def spawned():
     filePath = './../../../Data/CharacterDraw/output/results/m1/' + file
     im = Image.open(filePath)
     rgb_im = im.convert('RGB')
-    filePath = re.sub('(\w+).png', '\\1.jpg', filePath)
+    filePath = re.sub('(\w+).png', '\\1.jpeg', filePath)
     rgb_im.save(filePath)
-    files['file[' + str(i) + ']'] = (filePath, open(filePath, 'rb'))
+    # files['file[' + str(i) + ']'] = (filePath, open(filePath, 'rb'))
+    files['file[' + str(i) + ']'] = filePath
     i+=1
   print(files)
 
-  response = requests.post('https://developer.api.autodesk.com/photo-to-3d/v1/file', headers=headers, files=files)
+  response = requests.post('https://developer.api.autodesk.com/photo-to-3d/v1/file',\
+                          headers={'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + access_token}, data=files)
   print(response)
 
   startResponse = requests.post('https://developer.api.autodesk.com/photo-to-3d/v1/photoscene/' + sceneId, headers=headers)
