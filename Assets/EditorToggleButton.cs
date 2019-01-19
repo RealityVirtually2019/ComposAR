@@ -97,13 +97,16 @@ public class EditorToggleButton : MonoBehaviour {
         }
     }
 
+    // TODO: select floor, affect all world
+    // TODO: nothing selected, disable menu
+
     bool ignoreThisChange = false;
     public void DropdownValueChange() {
         RotationMode rotationMode = getRotationMode();
 
         float newValue;
         
-        Transform transform = mode == EditorMode.Unselected ? floor.transform : selectedItem.gameObject.transform;
+        Transform transform = selectedItem == null ? floor.transform : selectedItem.gameObject.transform;
 
         if (rotationMode == RotationMode.X) {
             newValue = transform.eulerAngles.x;
