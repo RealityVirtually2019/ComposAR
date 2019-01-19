@@ -93,9 +93,10 @@ public class EditorToggleButton : MonoBehaviour {
 
     public void RotateValueChange() {
         if (ignoreThisChange) {
+            ignoreThisChange = false;
             return;
         }
-        
+
         RotationMode rotationMode = getRotationMode();
 
         Vector3 rotationVector = new Vector3(
@@ -112,7 +113,7 @@ public class EditorToggleButton : MonoBehaviour {
         }
     }
 
-    bool ignoreThisChange = flase;
+    bool ignoreThisChange = false;
     public void DropdownValueChange() {
         RotationMode rotationMode = getRotationMode();
 
