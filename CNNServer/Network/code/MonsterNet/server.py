@@ -7,6 +7,7 @@ import os
 import time
 import re
 from PIL import Image
+import subprocess
 
 from flask import Flask, request
 app = Flask(__name__)
@@ -18,11 +19,17 @@ def doEverything():
   print(request.files)
   for key, file  in request.files.items():
     file.save('./../../../Data/CharacterDraw/sketch/' + file.filename)
-  main.main()  
+  # main.main()
   global return_val
-  gevent.joinall([gevent.spawn(spawned)])
+  print("Starting points build")
+  args = "ReconstructMesh.exe 1 FS ./../../../Data/CharacterDraw/hires/m1/ ./../../../Data/CharacterDraw/output/images/m1/ ./../../../Data/CharacterDraw/output/reconstruct/m1/ ./../../../Data/CharacterDraw/view/view.off --skip_optimization"
+  subprocess.call(args, shell=False)
+  print("Starting mesh build")
+  args = "PoissonRecon.exe --in ./../../../Data/CharacterDraw/output/reconstruct/m1/points.ply --out mesh.ply --depth 11 --samplesPerNode 5.0 --pointWeight 0.1"
+  subprocess.call(args, shell=False)
+  # gevent.joinall([gevent.spawn(spawned)])
   return return_val
-  
+
 def spawned():
   global return_val
   print('yoting')
