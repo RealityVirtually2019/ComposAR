@@ -3,6 +3,7 @@ import gevent
 import random
 import string
 import main
+import os
 
 from flask import Flask, request
 app = Flask(__name__)
@@ -13,7 +14,7 @@ return_val = 'no'
 def doEverything():
   print(request.files)
   for key, file  in request.files.items():
-    file.save('./../../../Data/CharacterDraw/sketch/' + file.filename)
+    file.save('./../../../Data/CharacterDraw/sketch/m1/' + file.filename)
   # main.main()  
   global return_val
   gevent.joinall([gevent.spawn(spawned)])
@@ -22,8 +23,8 @@ def doEverything():
 def spawned():
   global return_val
   print('yoting')
-  payload = {'client_id': 'p7EoOa2TjOdSJwNTwF1kstzkjaqlKYn2', \
-            'client_secret': '6CKbUmJ2x8l93g7q', \
+  payload = {'client_id': os.environ['FORGE_CLIENT_ID'], \
+            'client_secret': os.environ['FORGE_CLIENT_SECRET'], \
             'grant_type': 'client_credentials', \
             'scope': 'data:write'}
   resp = requests.post('https://developer.api.autodesk.com/authentication/v1/authenticate', \
