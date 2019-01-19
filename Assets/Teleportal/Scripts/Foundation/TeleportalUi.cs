@@ -124,7 +124,7 @@ public class TeleportalUi : MonoBehaviour {
   /// Updated on every rendered frame.
   /// </summary>
   void Update() {
-    if (Input.touchCount == 2 && Input.touches[0].phase == TouchPhase.Began) { // TP //
+    if (Input.GetMouseButtonDown(0)) {
       // If the main text field object is active, focus it.
       if (MainTextField.gameObject.active) {
         MainTextField.ActivateInputField();
@@ -132,13 +132,7 @@ public class TeleportalUi : MonoBehaviour {
 
       // Otherwise, tap the menu raycaster.
       else {
-        // TP //
-        if (XRItemRaycaster.Shared.ItemFocus == null) {
-          XRItemRaycaster.Shared.Tap();
-        }
-        else {
-          XRItemRaycaster.Shared.TapAlt();
-        }
+        XRItemRaycaster.Shared.Tap();
       }
     }
 
@@ -148,8 +142,11 @@ public class TeleportalUi : MonoBehaviour {
       if (MainTextField.gameObject.active) {
         MainTextField.ActivateInputField();
       }
-      
-      // TP //
+
+      // Otherwise, tap the menu raycaster.
+      else {
+        XRItemRaycaster.Shared.TapAlt();
+      }
     }
 
     // If the user is authenticated already...
@@ -741,7 +738,7 @@ public class TeleportalUi : MonoBehaviour {
           // Swipe Right
           if (deltaPos.x > TouchMoveThreshold) {
             // Toggle virtual world
-            // TP // TeleportalAr.Shared.ToggleVirtualWorld();
+            TeleportalAr.Shared.ToggleVirtualWorld();
           }
           // Swipe Left
           else if (deltaPos.x < -TouchMoveThreshold) {
