@@ -738,10 +738,10 @@ public class TeleportalUi : MonoBehaviour {
           // Swipe Right
           if (deltaPos.x > TouchMoveThreshold) {
             // Toggle virtual world
-            TeleportalAr.Shared.ToggleVirtualWorld();
+            // TP // TeleportalAr.Shared.ToggleVirtualWorld();
           }
           // Swipe Left
-          else if (deltaPos.x < -TouchMoveThreshold) {
+          else if (Input.touchCount == 2 && deltaPos.x < -TouchMoveThreshold) {
             // Reposition item (TODO move this to a "tap and hold" gesture)
             XRItemRaycaster.Shared.TapAlt();
           }

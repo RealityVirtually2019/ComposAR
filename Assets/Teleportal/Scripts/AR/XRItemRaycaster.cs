@@ -150,7 +150,7 @@ public class XRItemRaycaster : MonoBehaviour
 
 		// Otherwise, use the currently-selected Inventory Item.
 		else {
-			TeleportalInventory.Shared.UseCurrent();
+			// TP // TeleportalInventory.Shared.UseCurrent();
 		}
 	}
 
