@@ -28,14 +28,17 @@ public class TeleportalProject : MonoBehaviour {
     }
   }
 
+  // TP //
+  void Awake() {
+    // Set static self reference
+		TeleportalProject.Shared = this;
+  }
+
 	void Start() {
     // If in Edit mode
     if (!Application.isPlaying) {
       return;
     }
-
-		// Set static self reference
-		TeleportalProject.Shared = this;
     
     StartCoroutine(WaitForTeleportalLoad());
 

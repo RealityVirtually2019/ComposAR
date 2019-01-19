@@ -114,7 +114,7 @@ public class XRItem: MonoBehaviour {
   /// </summary>
   virtual public void Start() {
     // Parent this item gameobject to the Modules container object
-    transform.SetParent(Modules.Shared.transform);
+    transform.SetParent(GameObject.Find("Floor").transform);
     rb = GetComponent<Rigidbody>();
 
     // Move the transform out of sight for now
