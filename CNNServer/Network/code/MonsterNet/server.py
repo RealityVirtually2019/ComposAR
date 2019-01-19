@@ -17,12 +17,16 @@ return_val = 'no'
 def doEverything():
   print(request.files)
   for key, file  in request.files.items():
-    file.save('./../../../Data/CharacterDraw/sketch/' + file.filename)
-  main.main()  
+    file.save('./../../../Data/CharacterDraw/sketch/' + fi.filename)
+  main.main()
+  gevent.joinall([gevent.spawn(researchProcessing)])
   global return_val
-  gevent.joinall([gevent.spawn(spawned)])
+  # gevent.joinall([gevent.spawn(spawned)])
   return return_val
-  
+
+def researchProcessing():
+  os.system('"./../../../Fusion/output/ReconstructMesh/ReconstructMesh.exe"')
+
 def spawned():
   global return_val
   print('yoting')
