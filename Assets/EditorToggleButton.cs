@@ -82,7 +82,7 @@ public class EditorToggleButton : MonoBehaviour {
         bool showExitButton = false;
 
         // selected object controls 
-        bool showScaleSlider = false;
+        bool showScaleSlider = false;      
         bool showRotateSlider = false;
         bool showRotateDropdown = false;
         bool showScaleDropdown = false;
@@ -114,6 +114,14 @@ public class EditorToggleButton : MonoBehaviour {
                 DropdownValueChange();
                 ScaleDropdownValueChange();
             }
+
+            XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
+
+            if (lookingAtItem != null && lookingAtItem.gameObject.transform.name.Contains("camera")) {
+                cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GetRenderTexture();
+                showRawImage = true;
+                showTakeShotButton = true;
+            }
         } else if (newMode == EditorMode.Camera) {
             showSelectButton = true;
             showDuplicateButton = true;
@@ -126,7 +134,6 @@ public class EditorToggleButton : MonoBehaviour {
             if (lookingAtItem != null) {
                 cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GetRenderTexture();
             }
-
         }
 
         scaleSlider.gameObject.SetActive(showScaleSlider);
@@ -173,6 +180,15 @@ public class EditorToggleButton : MonoBehaviour {
 
     public void OnClickDuplicate() {
         // TODO: grab all children and new empty node with clones of each 
+        // TeleportalAr.Shared.MoveItem();
+        // waitingForDuplication = true 
+        int slot = 0;
+        int lastSlot = TeleportalInventory.Shared.CurrentItem.id;
+
+        TeleportalInventory.Shared.SetItem(slot);
+        TeleportalInventory.Shared.UseCurrent();
+        TeleportalInventory.Shared.SetItem(lastSlot);
+        // goto onDuplication
     }
 
     public void OnClickTakeShot() {
