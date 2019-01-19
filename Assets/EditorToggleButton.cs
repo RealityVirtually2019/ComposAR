@@ -124,7 +124,7 @@ public class EditorToggleButton : MonoBehaviour {
             XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
 
             if (lookingAtItem != null) {
-                cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GrabImage();
+                cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GetRenderTexture();
             }
 
         }
