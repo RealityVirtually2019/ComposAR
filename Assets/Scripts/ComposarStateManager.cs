@@ -26,7 +26,7 @@ public class ComposarStateManager : MonoBehaviour {
 	// TMP
 	private IEnumerator DelayStartSceneIE() {
 		yield return new WaitForSeconds(2.0f);
-		this.ChangeScene("SampleScene");
+		this.ChangeScene("Layout");
 	}
 
 	public void AddProject(Project project) {
