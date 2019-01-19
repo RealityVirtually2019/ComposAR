@@ -20,7 +20,7 @@ public class XRWorldItem: XRItem {
   public static int NextId = 0;
 
   public void Awake() {
-      TeleportalActions.Shared.OnLocationLock += Start;
+      // TP // TeleportalActions.Shared.OnLocationLock += Start;
   }
 
   public override void Start() {
@@ -32,7 +32,7 @@ public class XRWorldItem: XRItem {
     XRWorldItem.NextId += 1;
 
     // Add to List
-    TeleportalAr.Shared.CreateRealmItem("0", this); // 0 is the realm id. TEMP
+    // TP // TeleportalAr.Shared.CreateRealmItem("0", this); // 0 is the realm id. TEMP
   }
 
 }

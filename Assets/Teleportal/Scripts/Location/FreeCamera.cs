@@ -28,9 +28,8 @@ public class FreeCamera : MonoBehaviour {
 	float	m_pitch;
 
 	void CaptureInput() {
-		Cursor.lockState = CursorLockMode.Locked;
-
-		Cursor.visible = false;
+		// TMP // Cursor.lockState = CursorLockMode.Locked;
+		// TMP // Cursor.visible = false;
 		m_inputCaptured = true;
 	}
 
