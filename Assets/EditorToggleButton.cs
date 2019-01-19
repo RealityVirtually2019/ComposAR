@@ -20,6 +20,7 @@ public class EditorToggleButton : MonoBehaviour {
 
 
 	void Start () {
+        scaleSlider.value = 1;
         scaleSlider.maxValue = maxScale;
         scaleSlider.onValueChanged.AddListener(delegate { ScaleValueChange(); });
 
@@ -38,6 +39,7 @@ public class EditorToggleButton : MonoBehaviour {
         if (selectedItem != null) {
             DropdownValueChange();
             scaleSlider.value = selectedItem.gameObject.transform.localScale.x;
+            Debug.Log("zzz" + scaleSlider.value);
         }
     }
 
@@ -83,7 +85,7 @@ public class EditorToggleButton : MonoBehaviour {
             selectedItem.gameObject.transform.SetParent(floor.transform);
         }
 
-        selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
+        // selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
         for (int i = 0; i < selectedItem.gameObject.transform.childCount; i++) {
             selectedItem.gameObject.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
         }

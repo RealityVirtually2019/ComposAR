@@ -403,11 +403,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114374907198463900, guid: df816585cecdb450b862e9309b3fb3f3,
-        type: 2}
-      propertyPath: DefaultInventoryItems.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4931319784253330, guid: df816585cecdb450b862e9309b3fb3f3, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -439,21 +434,6 @@ Prefab:
     - target: {fileID: 4931319784253330, guid: df816585cecdb450b862e9309b3fb3f3, type: 2}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114374907198463900, guid: df816585cecdb450b862e9309b3fb3f3,
-        type: 2}
-      propertyPath: Id
-      value: composar
-      objectReference: {fileID: 0}
-    - target: {fileID: 20608999411769218, guid: df816585cecdb450b862e9309b3fb3f3,
-        type: 2}
-      propertyPath: m_ClearFlags
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114374907198463900, guid: df816585cecdb450b862e9309b3fb3f3,
-        type: 2}
-      propertyPath: DefaultInventoryItems.Array.data[0]
-      value: composar.cube
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df816585cecdb450b862e9309b3fb3f3, type: 2}
@@ -507,6 +487,31 @@ Prefab:
       propertyPath: floor
       value: 
       objectReference: {fileID: 91065465}
+    - target: {fileID: 114488722135440004, guid: ce4c9f631d93c495d9de7160a55a52c3,
+        type: 2}
+      propertyPath: m_MaxValue
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 224189166261642200, guid: ce4c9f631d93c495d9de7160a55a52c3,
+        type: 2}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224189166261642200, guid: ce4c9f631d93c495d9de7160a55a52c3,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114488722135440004, guid: ce4c9f631d93c495d9de7160a55a52c3,
+        type: 2}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224927574818073890, guid: ce4c9f631d93c495d9de7160a55a52c3,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce4c9f631d93c495d9de7160a55a52c3, type: 2}
   m_IsPrefabAsset: 0
