@@ -6,8 +6,20 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Loader.unity
+    guid: 2221112dcb4574ce8ad606be703319ae
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Project.unity
+    guid: b4f7de67ffc544ebab99e88bedcd62a3
+  - enabled: 1
+    path: Assets/Scenes/Sequence.unity
+    guid: 5807c976c3bf44ff786042c2afcc9eaf
+  - enabled: 1
+    path: Assets/Scenes/SketchAI.unity
+    guid: 429adecfcc5534553911962aacf5a92a
   - enabled: 1
     path: Assets/Teleportal/Scenes/Teleportal.unity
     guid: 74d57041faa7945a9bb9484cb6815c8e

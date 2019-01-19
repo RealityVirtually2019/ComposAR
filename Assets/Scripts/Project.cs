@@ -6,17 +6,15 @@ using System.Collections.Generic;
 
 public class Project {
 
-    // singleton reference
-    public static Project Current;
-
     private string projectName;
     public Dictionary<string, Sequence> sequenceMap;
     private Sequence currentSequence;
 
     public Project(string n)
     {
-        Project.Current = this;
         this.projectName = n;
+
+
     }
 
     public void MakeSequence(string name){
