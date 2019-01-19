@@ -16,6 +16,10 @@ public class ComposarStateManager : MonoBehaviour {
 		ComposarStateManager.Shared = this;
 	}
 
+	void Start() {
+		this.ChangeScene("Project");
+	}
+
 	public void AddProject(Project project) {
 		this.Projects.Add(project);
 	}
@@ -37,7 +41,12 @@ public class ComposarStateManager : MonoBehaviour {
 	}
 
 	public void ChangeScene(string sceneName) {
-		SceneManager.UnloadSceneAsync(this.CurrentSceneName);
+		// Unload existing scene (if there is one)
+		if (this.CurrentSceneName != null) {
+			SceneManager.UnloadSceneAsync(this.CurrentSceneName);
+		}
+		
+		// Load a new one
 		SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
 		this.CurrentSceneName = sceneName;
 	}
