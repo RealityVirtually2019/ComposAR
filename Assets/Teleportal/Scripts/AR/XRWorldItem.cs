@@ -20,7 +20,7 @@ public class XRWorldItem: XRItem {
   public static int NextId = 0;
 
   public void Awake() {
-      TeleportalActions.Shared.OnLocationLock += Start;
+      // TP // TeleportalActions.Shared.OnLocationLock += Start;
   }
 
   public override void Start() {

@@ -7,7 +7,7 @@ enum RotationMode { X, Y, Z }
 
 public class EditorToggleButton : MonoBehaviour {
 
-    public float maxScale = 5;
+    public float maxScale = 2;
 
     private XRItem selectedItem;
     private bool isMovingObject;
@@ -18,13 +18,22 @@ public class EditorToggleButton : MonoBehaviour {
     public Dropdown rotationDropdown;
     public Text selectButtonText;
 
+
 	void Start () {
         scaleSlider.maxValue = maxScale;
         scaleSlider.onValueChanged.AddListener(delegate { ScaleValueChange(); });
 
         rotateSlider.onValueChanged.AddListener(delegate { RotateValueChange(); });
         rotationDropdown.onValueChanged.AddListener(delegate { DropdownValueChange(); });
+
+        setShouldShowEditor(false);
 	}
+
+    private void setShouldShowEditor(bool shouldShow) {
+        scaleSlider.gameObject.SetActive(shouldShow);
+        rotateSlider.gameObject.SetActive(shouldShow);
+        rotationDropdown.gameObject.SetActive(shouldShow);
+    }
 
     // Menu Toggles
 
@@ -50,30 +59,39 @@ public class EditorToggleButton : MonoBehaviour {
         }
 
         isMovingObject = isMoving;
-
-        // Color color = gameObject.color;
-        // color.a = isMoving ? 0.5f : 1.0f;
-        // gameObject.color = color;
+        setShouldShowEditor(isMoving);
+        
+        float alpha = 1.0f;
 
         if (isMoving) {
             selectButtonText.text = "Unselect";
             TeleportalAr.Shared.HoldItem(selectedItem);
-            selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            //selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            alpha = 0.5f;
         } else {
             selectButtonText.text = "Select";
-            selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            // selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             TeleportalAr.Shared.ReleaseItem(selectedItem);
+            selectedItem.gameObject.transform.SetParent(null);
+            selectedItem.gameObject.transform.SetParent(floor.transform);
             selectedItem = null;
+        }
+
+        selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
+        for (int i = 0; i < selectedItem.gameObject.transform.childCount; i++) {
+            selectedItem.gameObject.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
         }
     }
 
     // Slider Changes
 
     public void ScaleValueChange() {
-        if (selectedItem == null) {
-            floor.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
-        } else {
-            selectedItem.gameObject.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
+        if (selectedItem != null) {
+            if (selectedItem.gameObject.name.Equals("Floor")) {
+                floor.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
+            } else {
+                selectedItem.gameObject.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
+            }
         }
     }
 
@@ -90,23 +108,31 @@ public class EditorToggleButton : MonoBehaviour {
                 rotationMode == RotationMode.Y ? rotateSlider.value : 0,
                 rotationMode == RotationMode.Z ? rotateSlider.value : 0);
 
-        if (selectedItem == null) {
-            floor.transform.eulerAngles = rotationVector;
-        } else {
-            selectedItem.gameObject.transform.eulerAngles = rotationVector;
+        if (selectedItem != null) {
+            if (selectedItem.gameObject.name.Equals("Floor")) {
+                floor.transform.eulerAngles = rotationVector;
+            } else {
+                selectedItem.gameObject.transform.eulerAngles = rotationVector;
+            }
         }
     }
 
     // TODO: select floor, affect all world
     // TODO: nothing selected, disable menu
+    // TODO: transluecent for all children 
+    // TODO: let go is not being set back to prev parent  ?
 
     bool ignoreThisChange = false;
     public void DropdownValueChange() {
+        if (selectedItem == null) {
+            return;
+        }
+
         RotationMode rotationMode = getRotationMode();
 
         float newValue;
         
-        Transform transform = selectedItem == null ? floor.transform : selectedItem.gameObject.transform;
+        Transform transform = selectedItem.gameObject.name.Equals("Floor") ? floor.transform : selectedItem.gameObject.transform;
 
         if (rotationMode == RotationMode.X) {
             newValue = transform.eulerAngles.x;
