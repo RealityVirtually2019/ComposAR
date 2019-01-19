@@ -28,7 +28,27 @@ import data
 import monnet as mn
 import view as vw
 
-FLAGS = tf.app.flags.FLAGS
+# FLAGS = tf.app.flags.FLAGS
+
+FLAGS = {\
+  'train': False,\
+  'test': True,\
+  'encode': False,\
+  'predict_normal': True,\
+  'continuous_view': False,\
+  'no_adversarial': False,\
+  'batch_size': 2,\
+  'image_size': 256,\
+  'sketch_variations': 4,\
+  'sketch_views': 'FS',\
+  'max_epochs': 100.0,\
+  'gpu_fraction': 0.9,\
+  'data_dir': './../../../Data/CharacterDraw/',\
+  'train_dir': './../../../Data/Checkpoint/Character/',\
+  'test_dir': './../../../Data/CharacterDraw/output/',\
+  'encode_dir': './../../../../Data/CharacterDraw/encode/',\
+  'view_file': 'view.off'\
+}
 
 tf.app.flags.DEFINE_boolean('train', False,
 							"""Flag for training routine.""")
@@ -74,13 +94,13 @@ def main(argv=None):
 
 	monnet = mn.MonNet(FLAGS)
 
-	if int(FLAGS.train) + int(FLAGS.test) + int(FLAGS.encode) != 1:
+	if int(FLAGS['train']) + int(FLAGS['test']) + int(FLAGS['encode']) != 1:
 		print('please specify \'train\' or \'test\' or \'encode\'')
 		return
 
-	views = vw.Views(os.path.join(FLAGS.data_dir, 'view', FLAGS.view_file))
+	views = vw.Views(os.path.join(FLAGS['data_dir'], 'view', FLAGS['view_file']))
 
-	if FLAGS.train:
+	if FLAGS['train']:
 		train_names, train_sources, train_targets, train_masks, train_angles, num_train_shapes = data.load_train_data(FLAGS, views)
 		valid_names, valid_sources, valid_targets, valid_masks, valid_angles, num_valid_shapes = data.load_validate_data(FLAGS, views)
 
@@ -102,7 +122,7 @@ def main(argv=None):
 				angles=valid_angles,
 				views=views,
 				is_validation=True)
-	elif FLAGS.test:
+	elif FLAGS['test']:
 		test_names, test_sources, test_targets, test_masks, test_angles, num_test_shapes = data.load_test_data(FLAGS, views)
 
 		with tf.variable_scope("monnet") as scope:
@@ -114,7 +134,7 @@ def main(argv=None):
 				angles=test_angles,
 				views=views,
 				is_testing=True)
-	elif FLAGS.encode:
+	elif FLAGS['encode']:
 		encode_names, encode_sources, encode_targets, encode_masks, encode_angles, num_encode_shapes = data.load_encode_data(FLAGS, views)
 
 		with tf.variable_scope("monnet") as scope:
@@ -130,17 +150,17 @@ def main(argv=None):
 
 	############################################ compute graph ############################################
 
-	gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=FLAGS.gpu_fraction)
+	gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=FLAGS['gpu_fraction'])
 
 	with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options,
 		log_device_placement=False,
 		allow_soft_placement=True)) as sess:
 
-		if FLAGS.train:
+		if FLAGS['train']:
 			monnet.train(sess, views, num_train_shapes, num_valid_shapes)
-		elif FLAGS.test:
+		elif FLAGS['test']:
 			monnet.test(sess, views, num_test_shapes)
-		elif FLAGS.encode:
+		elif FLAGS['encode']:
 			monnet.encode(sess, views, num_encode_shapes)
 
 		sess.close()

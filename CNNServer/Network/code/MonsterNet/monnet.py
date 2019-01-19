@@ -59,7 +59,7 @@ class MonNet(object):
 		print('Building network...')
 
 		source_size = sources.get_shape().as_list()
-		if self.config.continuous_view:
+		if self.config['continuous_view']:
 			num_output_views = 1
 		else:
 			num_output_views = views.num_views
@@ -77,7 +77,7 @@ class MonNet(object):
 		# generator
 
 		num_channels = targets.get_shape()[3].value
-		if not self.config.continuous_view:
+		if not self.config['continuous_view']:
 			with tf.variable_scope(var_scope_G):
 				with tf_framework.arg_scope(layer.unet_scopes(bn_scope_G)):
 					preds, features = network.generateUNet(sources, num_output_views, num_channels) # (n*m) x H x W x C ; n x D
@@ -99,7 +99,7 @@ class MonNet(object):
 		targets_content = tf.slice(targets, [0,0,0,0], [-1,-1,-1,num_channels-1])
 		targets_mask = tf.slice(targets, [0,0,0,num_channels-1], [-1,-1,-1,1])
 		targets = image.apply_mask(targets_content, targets_mask)
-		if self.config.predict_normal:
+		if self.config['predict_normal']:
 			preds_normal = tf.slice(preds_content, [0,0,0,0], [-1,-1,-1,3])
 			preds_depth = tf.slice(preds_content, [0,0,0,3], [-1,-1,-1,1])
 			targets_normal = tf.slice(targets_content, [0,0,0,0], [-1,-1,-1,3])
@@ -121,7 +121,7 @@ class MonNet(object):
 
 		# discriminator
 
-		if not self.config.no_adversarial:
+		if not self.config['no_adversarial']:
 			with tf.variable_scope(var_scope_D):
 				with tf_framework.arg_scope(layer.unet_scopes(bn_scope_D)):
 					disc_data = tf.concat([targets, preds], 0)
@@ -139,7 +139,7 @@ class MonNet(object):
 		ml = loss.compute_mask_loss(preds_mask, targets_mask)
 		loss_g_p = dl + nl + ml
 
-		if self.config.no_adversarial:
+		if self.config['no_adversarial']:
 			loss_g_a = 0.0
 			loss_d_r = 0.0
 			loss_d_f = 0.0
@@ -220,7 +220,7 @@ class MonNet(object):
 		self.grad_G_list = [grad[0] for grad in grad_G if grad[0] is not None]
 		self.update_G_op = opt_G.apply_gradients(self.grad_G_placeholder, global_step=opt_step) # only update opt_step in G net
 
-		if not self.config.no_adversarial:
+		if not self.config['no_adversarial']:
 			grad_D = opt_D.compute_gradients(loss_D, var_list=all_vars_D, colocate_gradients_with_ops=True)
 			self.grad_D_placeholder = [(tf.placeholder(tf.float32, shape=grad[1].get_shape()), grad[1]) for grad in grad_D if grad[0] is not None]
 			self.grad_D_list = [grad[0] for grad in grad_D if grad[0] is not None]
@@ -229,14 +229,14 @@ class MonNet(object):
 		# visualization stuffs
 
 		sources_original, sources_flipped = tf.split(sources_expanded, 2, axis=3)
-		if len(self.config.sketch_views) == 1: # single input
+		if len(self.config['sketch_views']) == 1: # single input
 			sources_front = sources_original
 			sources_side = tf.ones_like(sources_front) # fake side sketch
 			sources_top = tf.ones_like(sources_front) # fake top sketch
-		elif len(self.config.sketch_views) == 2: # double input
+		elif len(self.config['sketch_views']) == 2: # double input
 			sources_front, sources_side = tf.split(sources_original, 2, axis=3)
 			sources_top = tf.ones_like(sources_front) # fake top sketch
-		elif len(self.config.sketch_views) == 3: # triple input
+		elif len(self.config['sketch_views']) == 3: # triple input
 			sources_front, sources_side, sources_top = tf.split(sources_original, 3, axis=3)
 		if sources_front.get_shape()[3].value == 1 and targets.get_shape()[3].value == 4:
 			alpha_front = tf.ones_like(sources_front)
@@ -262,7 +262,7 @@ class MonNet(object):
 
 		# output images
 
-		num_sketch_views = len(self.config.sketch_views)
+		num_sketch_views = len(self.config['sketch_views'])
 		if num_sketch_views==1:
 			all_input_row = sources_front
 		elif num_sketch_views==2:
@@ -302,7 +302,7 @@ class MonNet(object):
 
 		print('Training...')
 
-		ckpt = tf.train.get_checkpoint_state(self.config.train_dir)
+		ckpt = tf.train.get_checkpoint_state(self.config['train_dir'])
 		init_op = tf.global_variables_initializer()
 		sess.run(init_op)
 		if ckpt and ckpt.model_checkpoint_path:
@@ -318,10 +318,10 @@ class MonNet(object):
 
 		coord = tf.train.Coordinator()
 		threads = tf.train.start_queue_runners(sess=sess, coord=coord)
-		self.summarizer = tf.summary.FileWriter(self.config.train_dir, sess.graph)
+		self.summarizer = tf.summary.FileWriter(self.config['train_dir'], sess.graph)
 
-		print_interval = 40 // self.config.batch_size # steps
-		update_interval = 40 // self.config.batch_size # steps
+		print_interval = 40 // self.config['batch_size'] # steps
+		update_interval = 40 // self.config['batch_size'] # steps
 		summary_interval = 200 # steps
 		validate_interval = 200 # steps
 		output_interval = 1000 # steps
@@ -331,7 +331,7 @@ class MonNet(object):
 
 		start_time = time.time()
 
-		train_D_net = not self.config.no_adversarial
+		train_D_net = not self.config['no_adversarial']
 		batch_grad_G_list = None
 		batch_grad_D_list = None
 		batch_losses_G = None
@@ -343,7 +343,7 @@ class MonNet(object):
 
 			# compute epochs
 
-			epochs = 1.0*(self.step+1)*self.config.batch_size/num_train_shapes
+			epochs = 1.0*(self.step+1)*self.config['batch_size']/num_train_shapes
 			do_print = ((self.step+1) % print_interval == 0)
 			do_update = ((self.step+1) % update_interval == 0)
 			do_validate = ((self.step+1) % validate_interval == 0)
@@ -355,13 +355,13 @@ class MonNet(object):
 
 			step_G_list = sess.run(self.grad_G_list + [self.bn_G_op, self.train_losses_G])
 			step_grad_G_list = step_G_list[:-2]
-			step_losses_G = step_G_list[-1] / self.config.batch_size
+			step_losses_G = step_G_list[-1] / self.config['batch_size']
 			batch_grad_G_list = self.cumulate_gradients(batch_grad_G_list, step_grad_G_list)
 
 			if train_D_net:
 				step_D_list = sess.run(self.grad_D_list + [self.bn_D_op, self.train_losses_D])
 				step_grad_D_list = step_D_list[:-2]
-				step_losses_D = step_D_list[-1] / self.config.batch_size
+				step_losses_D = step_D_list[-1] / self.config['batch_size']
 				batch_grad_D_list = self.cumulate_gradients(batch_grad_D_list, step_grad_D_list)
 			else:
 				if step_losses_D is None:
@@ -386,7 +386,7 @@ class MonNet(object):
 					sess.run(self.update_D_op, feed_dict=grad_D_dict)
 					batch_grad_D_list = None
 
-				if not self.config.no_adversarial:
+				if not self.config['no_adversarial']:
 					batch_losses_G = batch_losses_G / update_interval
 					if batch_losses_D is not None:
 						batch_losses_D = batch_losses_D / update_interval
@@ -412,7 +412,7 @@ class MonNet(object):
 					self.summarizer.add_summary(summary_D_str, self.step)
 
 			if do_checkpoint:
-				self.saver.save(sess, os.path.join(self.config.train_dir,'model.ckpt'), global_step=self.step+1)
+				self.saver.save(sess, os.path.join(self.config['train_dir'],'model.ckpt'), global_step=self.step+1)
 			
 			if do_print:
 				now_time = time.time()
@@ -423,11 +423,11 @@ class MonNet(object):
 					(step_losses_G[0], step_losses_G[1], step_losses_G[2], step_losses_D[0], step_losses_D[1], step_losses_D[2])
 				print(log_str_1, end='')
 				print(log_str_2)
-				log_file_name = os.path.join(self.config.train_dir,'log.txt')
+				log_file_name = os.path.join(self.config['train_dir'],'log.txt')
 				with open(log_file_name, 'a') as log_file:
 					log_file.write(log_str_1+log_str_2+'\n')
 
-			if epochs >= self.config.max_epochs:
+			if epochs >= self.config['max_epochs']:
 				break
 
 			self.step += 1
@@ -440,7 +440,7 @@ class MonNet(object):
 		print('Testing...')
 
 		self.saver = tf.train.Saver()
-		ckpt = tf.train.get_checkpoint_state(self.config.train_dir)
+		ckpt = tf.train.get_checkpoint_state(self.config['train_dir'])
 		if ckpt and ckpt.model_checkpoint_path:
 			self.saver.restore(sess, ckpt.model_checkpoint_path)
 			try:
@@ -453,14 +453,14 @@ class MonNet(object):
 
 		coord = tf.train.Coordinator()
 		threads = tf.train.start_queue_runners(sess=sess, coord=coord)
-		self.summarizer = tf.summary.FileWriter(self.config.test_dir, sess.graph)
+		self.summarizer = tf.summary.FileWriter(self.config['test_dir'], sess.graph)
 
 		output_count = 0
 		output_prefix = 'dn14'
 		output_images_folder = 'images'
 		output_results_folder = 'results'
 
-		log_file_name = os.path.join(self.config.test_dir,'log.txt')
+		log_file_name = os.path.join(self.config['test_dir'],'log.txt')
 		log_file = open(log_file_name, 'a')
 
 		started = False
@@ -483,22 +483,22 @@ class MonNet(object):
 				log_file.write('%6f ' % errors[k])
 
 				# export images
-				name_input = os.path.join(self.config.test_dir, output_images_folder, shape_name, 'input.png')
+				name_input = os.path.join(self.config['test_dir'], output_images_folder, shape_name, 'input.png')
 				image.write_image(name_input, images[0, k])
-				name_gt = os.path.join(self.config.test_dir, output_images_folder, shape_name, ('gt-'+output_prefix+'--'+view_name+'.png'))
-				name_output = os.path.join(self.config.test_dir, output_images_folder, shape_name, ('pred-'+output_prefix+'--'+view_name+'.png'))
+				name_gt = os.path.join(self.config['test_dir'], output_images_folder, shape_name, ('gt-'+output_prefix+'--'+view_name+'.png'))
+				name_output = os.path.join(self.config['test_dir'], output_images_folder, shape_name, ('pred-'+output_prefix+'--'+view_name+'.png'))
 				image.write_image(name_gt, images[1, k])
 				image.write_image(name_output, images[2, k])
 				
-				name_normal = os.path.join(self.config.test_dir, output_images_folder, shape_name, ('normal-'+output_prefix+'--'+view_name+'.png'))
-				name_depth = os.path.join(self.config.test_dir, output_images_folder, shape_name, ('depth-'+output_prefix+'--'+view_name+'.png'))
-				name_mask = os.path.join(self.config.test_dir, output_images_folder, shape_name, ('mask-'+output_prefix+'--'+view_name+'.png'))
+				name_normal = os.path.join(self.config['test_dir'], output_images_folder, shape_name, ('normal-'+output_prefix+'--'+view_name+'.png'))
+				name_depth = os.path.join(self.config['test_dir'], output_images_folder, shape_name, ('depth-'+output_prefix+'--'+view_name+'.png'))
+				name_mask = os.path.join(self.config['test_dir'], output_images_folder, shape_name, ('mask-'+output_prefix+'--'+view_name+'.png'))
 				image.write_image(name_normal, images[3, k])
 				image.write_image(name_depth, images[4, k])
 				image.write_image(name_mask, images[5, k])
 
 				# export results
-				name_output = os.path.join(self.config.test_dir, output_results_folder, shape_name, (output_prefix+'-'+view_name+'.png'))
+				name_output = os.path.join(self.config['test_dir'], output_results_folder, shape_name, (output_prefix+'-'+view_name+'.png'))
 				image.write_image(name_output, images[2, k])
 
 				# check termination
@@ -515,7 +515,7 @@ class MonNet(object):
 		print('Encoding...')
 
 		self.saver = tf.train.Saver()
-		ckpt = tf.train.get_checkpoint_state(self.config.train_dir)
+		ckpt = tf.train.get_checkpoint_state(self.config['train_dir'])
 		if ckpt and ckpt.model_checkpoint_path:
 			self.saver.restore(sess, ckpt.model_checkpoint_path)
 			self.step = int(ckpt.model_checkpoint_path.split('/')[-1].split('-')[-1])
@@ -525,7 +525,7 @@ class MonNet(object):
 
 		coord = tf.train.Coordinator()
 		threads = tf.train.start_queue_runners(sess=sess, coord=coord)
-		self.summarizer = tf.summary.FileWriter(self.config.encode_dir, sess.graph)
+		self.summarizer = tf.summary.FileWriter(self.config['encode_dir'], sess.graph)
 
 		output_count = 0
 		output_folder = 'features'
@@ -538,7 +538,7 @@ class MonNet(object):
 				print('Processed %d: %s' % (output_count, shape_name))
 
 				# export results
-				name_output = os.path.join(self.config.encode_dir, output_folder, (shape_name+'.bin'))
+				name_output = os.path.join(self.config['encode_dir'], output_folder, (shape_name+'.bin'))
 				data.write_bin_data(name_output, features[k])
 
 				# check termination
@@ -558,7 +558,7 @@ class MonNet(object):
 			losses = sess.run(self.valid_losses)
 			losses = np.array(losses)
 			cum_losses = losses if cum_losses is None else cum_losses+losses
-			num_processed_shapes += self.config.batch_size
+			num_processed_shapes += self.config['batch_size']
 		cum_losses /= num_processed_shapes
 
 		print('===== validation loss: %.3g' % cum_losses[0])
@@ -577,23 +577,23 @@ class MonNet(object):
 			if view_name == '0':
 				print(shape_name)
 			
-			name_output = os.path.join(self.config.train_dir, valid_results_folder, shape_name, ('output--'+view_name+'.png'))
-			name_gt = os.path.join(self.config.train_dir, valid_results_folder, shape_name, ('gt--'+view_name+'.png'))
+			name_output = os.path.join(self.config['train_dir'], valid_results_folder, shape_name, ('output--'+view_name+'.png'))
+			name_gt = os.path.join(self.config['train_dir'], valid_results_folder, shape_name, ('gt--'+view_name+'.png'))
 			image.write_image(name_output, images[0, k])
 			image.write_image(name_gt, images[1, k])
 			
-			name_normal = os.path.join(self.config.train_dir, valid_results_folder, shape_name, ('normal--'+view_name+'.png'))
-			name_depth = os.path.join(self.config.train_dir, valid_results_folder, shape_name, ('depth--'+view_name+'.png'))
-			name_mask = os.path.join(self.config.train_dir, valid_results_folder, shape_name, ('mask--'+view_name+'.png'))
+			name_normal = os.path.join(self.config['train_dir'], valid_results_folder, shape_name, ('normal--'+view_name+'.png'))
+			name_depth = os.path.join(self.config['train_dir'], valid_results_folder, shape_name, ('depth--'+view_name+'.png'))
+			name_mask = os.path.join(self.config['train_dir'], valid_results_folder, shape_name, ('mask--'+view_name+'.png'))
 			image.write_image(name_normal, images[2, k])
 			image.write_image(name_depth, images[3, k])
 			image.write_image(name_mask, images[4, k])
 
 		# loop over all remaining shapes in the queue...
-		num_processed_shapes = self.config.batch_size
+		num_processed_shapes = self.config['batch_size']
 		while num_processed_shapes < num_shapes:
 			sess.run(self.names)
-			num_processed_shapes += self.config.batch_size
+			num_processed_shapes += self.config['batch_size']
 
 	def cumulate_gradients(self, cum_grads, grads):
 		if cum_grads is None:
