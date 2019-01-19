@@ -7,17 +7,12 @@ using UnityEngine;
 
 public class Misc : MonoBehaviour {
 
-	void Awake() {
-		TeleportalProject.Shared.OnTeleportalLoaded = OnTeleportalLoaded;
+	void Start() {
+		TeleportalProject.Shared.OnTeleportalLoaded += OnTeleportalLoaded;
 	}
 
 	void OnTeleportalLoaded() {
-		// blank
-	}
-
-	// Use this for initialization
-	void Start () {
-		
+		// TeleportalInventory.Shared.BarUI.active = false;
 	}
 	
 	// Update is called once per frame

@@ -110,7 +110,7 @@ Camera:
   m_GameObject: {fileID: 1278475485269956}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
@@ -173,7 +173,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ApiKey: 1234567890
-  Id: demo
+  Id: composar
+  DefaultInventoryItems:
+  - composar.cube
+  - composar.camera
 --- !u!114 &114614181178316404
 MonoBehaviour:
   m_ObjectHideFlags: 1

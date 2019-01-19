@@ -11,21 +11,26 @@ using UnityEngine;
 /// </summary>
 public class ParentToImmersiveCamera : MonoBehaviour {
 
+	public Canvas UICanvas;
+
 	// Initializer function
 	void Start() {
 		// Move to be a child under the immersive camera
-		WaitThenSetParent(TeleportalAr.Shared.CurrentCamera.transform);
+		WaitThenSetParent();
 	}
 
-	void WaitThenSetParent(Transform newParent) {
-		StartCoroutine(WaitThenSetParentI(newParent));
+	void WaitThenSetParent() {
+		StartCoroutine(WaitThenSetParentI());
 	}
 
-	IEnumerator WaitThenSetParentI(Transform newParent) {
+	IEnumerator WaitThenSetParentI() {
 		// Wait 1 second
 		yield return new WaitForSeconds(1);
 
 		// Move to be a child under the new parent
+		// TP //
+		UICanvas.worldCamera = TeleportalAr.Shared.CurrentCamera;
+		Transform newParent = UICanvas.worldCamera.transform;
 		transform.parent.SetParent(newParent, false);
 
 		// Finish

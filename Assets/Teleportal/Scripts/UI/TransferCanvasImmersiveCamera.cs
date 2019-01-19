@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 public class TransferCanvasImmersiveCamera : MonoBehaviour {
 
-	private Canvas UICanvas;
+	public Canvas UICanvas;
 
 	// Initializer function
 	void Start() {
