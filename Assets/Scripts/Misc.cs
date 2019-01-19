@@ -8,11 +8,11 @@ using UnityEngine;
 public class Misc : MonoBehaviour {
 
 	void Start() {
-
+		TeleportalProject.Shared.OnTeleportalLoaded += OnTeleportalLoaded;
 	}
 
 	void OnTeleportalLoaded() {
-		// blank
+		// TeleportalInventory.Shared.BarUI.active = false;
 	}
 	
 	// Update is called once per frame

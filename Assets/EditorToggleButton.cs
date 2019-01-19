@@ -18,15 +18,21 @@ public class EditorToggleButton : MonoBehaviour {
     public Slider scaleSlider;
     public Slider rotateSlider;
     public Dropdown rotationDropdown;
+    public Text selectButtonText;
 
 	void Start () {
         scaleSlider.maxValue = maxScale;
         scaleSlider.onValueChanged.AddListener(delegate { ScaleValueChange(); });
 
         rotateSlider.onValueChanged.AddListener(delegate { RotateValueChange(); });
+        rotationDropdown.onValueChanged.AddListener(delegate { DropdownValueChange(); });
 	}
 
     // Menu Toggles
+
+    public void OnClickSpawn() {
+        TeleportalInventory.Shared.UseCurrent();
+    }
 
     public void OnClickScale() {
         mode = EditorMode.Scale;
@@ -51,6 +57,7 @@ public class EditorToggleButton : MonoBehaviour {
 
     private void setIsMoving(bool isMoving) {
         if (selectedItem == null) {
+            isMoving = false;
             return;
         }
 
@@ -61,9 +68,11 @@ public class EditorToggleButton : MonoBehaviour {
         // gameObject.color = color;
 
         if (isMoving) {
+            selectButtonText.text = "Unselect";
             TeleportalAr.Shared.HoldItem(selectedItem);
             selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
         } else {
+            selectButtonText.text = "Select";
             selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             TeleportalAr.Shared.ReleaseItem(selectedItem);
             selectedItem = null;
@@ -81,7 +90,12 @@ public class EditorToggleButton : MonoBehaviour {
             }
         }
     }
+
     public void RotateValueChange() {
+        if (ignoreThisChange) {
+            return;
+        }
+        
         RotationMode rotationMode = getRotationMode();
 
         Vector3 rotationVector = new Vector3(
@@ -98,26 +112,27 @@ public class EditorToggleButton : MonoBehaviour {
         }
     }
 
-    // public void DropdownValueChange() {
-    //     RotationMode rotationMode = getRotationMode();
+    bool ignoreThisChange = flase;
+    public void DropdownValueChange() {
+        RotationMode rotationMode = getRotationMode();
 
-    //     float newValue;
+        float newValue;
         
-    //     Transform transform = mode == EditorMode.Unselected ? floor.transform : selectedItem.gameObject.transform;
+        Transform transform = mode == EditorMode.Unselected ? floor.transform : selectedItem.gameObject.transform;
 
-    //     if (rotationMode == RotationMode.X) {
-    //         newValue = transform.eulerAngles.x;
-    //     } else if (rotationMode == RotationMode.Y) {
-    //         newValue = transform.eulerAngles.y;
-    //     } else {
-    //         newValue = transform.eulerAngles.z;
-    //     }
+        if (rotationMode == RotationMode.X) {
+            newValue = transform.eulerAngles.x;
+        } else if (rotationMode == RotationMode.Y) {
+            newValue = transform.eulerAngles.y;
+        } else {
+            newValue = transform.eulerAngles.z;
+        }
 
-    //     Debug.Log(newValue);
+        Debug.Log(newValue);
 
-    //     ignoreThisChange = true;
-    //     rotateSlider.value = newValue;
-    // }
+        ignoreThisChange = true;
+        rotateSlider.value = newValue;
+    }
 
     private RotationMode getRotationMode() {
         RotationMode rotationMode;
