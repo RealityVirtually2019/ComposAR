@@ -58,10 +58,10 @@ def spawned():
   }
 
   files = {\
-      'photosceneid': (None, 'hcYJcrnHUsNSPII9glhVe8lRF6lFXs4NHzGqJ3zdWMU\n'),\
-      'type': (None, 'image\n')\
       # 'file[0]': ('./../../../Data/CharacterDraw/sketch/sketch-F-0.png', open('./../../../Data/CharacterDraw/sketch/sketch-F-0.png', 'rb')),\
       # 'file[1]': ('./../../../Data/CharacterDraw/sketch/sketch-S-0.png', open('./../../../Data/CharacterDraw/sketch/sketch-S-0.png', 'rb')),\
+    'photosceneid': sceneId,\
+    'type': 'image',\
   }
 
   i = 0
@@ -70,7 +70,7 @@ def spawned():
     filePath = './../../../Data/CharacterDraw/output/results/m1/' + file
     im = Image.open(filePath)
     rgb_im = im.convert('RGB')
-    filePath = re.sub('(\w+).png', '\\1.jpeg', filePath)
+    filePath = re.sub('(\w+).png', '\\1.jpg', filePath)
     rgb_im.save(filePath)
     # files['file[' + str(i) + ']'] = (filePath, open(filePath, 'rb'))
     files['file[' + str(i) + ']'] = filePath
@@ -85,11 +85,11 @@ def spawned():
   print(startResponse.json())
 
   progressResponse = None
-  while progressResponse is None or progressResponse.json()['Photoscene']['progressmsg'] != 'DONE':
+  while progressResponse is None or (progressResponse.json()['Photoscene']['progressmsg'] != 'DONE' and progressResponse.json()['Photoscene']['progressmsg'] != 'ERROR'):
     progressResponse = requests.get('https://developer.api.autodesk.com/photo-to-3d/v1/photoscene/' + sceneId + '/progress', \
                 headers={'Content-Type': 'application/json', 'Authorization': 'Bearer ' + access_token})
     # print(progressResponse)
-    # print(progressResponse.json())
+    print(progressResponse.json())
     print(progressResponse.json()['Photoscene']['progress'])
     time.sleep(7)
   
