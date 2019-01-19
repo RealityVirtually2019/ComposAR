@@ -4,9 +4,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Project : MonoBehaviour {
+public class Project {
 
-    // @tom does this need a singleton as well?
+    // singleton reference
+    public static Project Current;
 
     private string projectName;
     public Dictionary<string, Sequence> sequenceMap;
@@ -14,6 +15,7 @@ public class Project : MonoBehaviour {
 
     public Project(string n)
     {
+        Project.Current = this;
         this.projectName = n;
     }
 
