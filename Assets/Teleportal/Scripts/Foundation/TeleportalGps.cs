@@ -117,7 +117,7 @@ public class TeleportalGps : MonoBehaviour {
 
     while (true) {
       // Continue sending location, based on player's world position
-      Transform t = TeleportalAr.Shared.CurrentCamera.transform;
+      Transform t = TeleportalPlayer.Current.gameObject.transform; // TP //
 
       // Create a vector containing the current local, unmodified position.
       // This is indirectly retrieved from ARKit/ARCore (via Unity camera transform).
