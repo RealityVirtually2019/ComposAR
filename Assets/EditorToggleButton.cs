@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-enum RotationMode { X, Y, Z }
+enum EditorMode { Camera, LookingAtObject, SelectedObject, None }
 
 public class EditorToggleButton : MonoBehaviour {
 
@@ -13,34 +13,117 @@ public class EditorToggleButton : MonoBehaviour {
     private bool isMovingObject;
 
     public GameObject floor;
+
+    // selectedobject items 
     public Slider scaleSlider;
     public Slider rotateSlider;
     public Dropdown rotationDropdown;
+    public Dropdown scaleDropdown;
+
+    // looking at object options 
+    public Button selectButton;
+    public Button duplicateButton;
+    public Button deleteButton;
+
+    // TODO: camera renderer/take show button 
+
     public Text selectButtonText;
 
+    private EditorMode currentEditMode = EditorMode.SelectedObject;
 
 	void Start () {
         scaleSlider.value = 1;
+        scaleDropdown.value = 3;
         scaleSlider.maxValue = maxScale;
         scaleSlider.onValueChanged.AddListener(delegate { ScaleValueChange(); });
 
         rotateSlider.onValueChanged.AddListener(delegate { RotateValueChange(); });
         rotationDropdown.onValueChanged.AddListener(delegate { DropdownValueChange(); });
+        scaleDropdown.onValueChanged.AddListener(delegate { ScaleDropdownValueChange(); });
 
-        setShouldShowEditor(false);
+        setEditorMode(EditorMode.None);
 	}
 
-    private void setShouldShowEditor(bool shouldShow) {
-        scaleSlider.gameObject.SetActive(shouldShow);
-        rotateSlider.gameObject.SetActive(shouldShow);
-        rotationDropdown.gameObject.SetActive(shouldShow);
+    void Update() {
+        EditorMode newEditorMode = EditorMode.None;
 
-        // set values back 
+        // they already have an item, so they are moving an object 
         if (selectedItem != null) {
-            DropdownValueChange();
-            scaleSlider.value = selectedItem.gameObject.transform.localScale.x;
-            Debug.Log("zzz" + scaleSlider.value);
+            newEditorMode = EditorMode.SelectedObject;
+        } else {
+            XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
+
+            // if they are looking at an item and not holding one, determine if it is camera/object  
+            if (lookingAtItem != null) {
+                GameObject lookingAtObject = lookingAtItem.gameObject;
+
+                if (lookingAtObject.transform.name.Contains("camera")) {
+                    newEditorMode = EditorMode.Camera;
+                } else {
+                    newEditorMode = EditorMode.LookingAtObject;
+                }
+            } else {
+                // if they are not looking at an item, they are looking at none
+                newEditorMode = EditorMode.None;
+            }
         }
+
+        Debug.Log("EditorMode: " + newEditorMode);
+
+        setEditorMode(newEditorMode);
+    }
+
+    private void setEditorMode(EditorMode newMode) {
+        if (newMode == currentEditMode) {
+            return; 
+        }
+
+        // selected object controls 
+        bool showScaleSlider = false;
+        bool showRotateSlider = false;
+        bool showRotateDropdown = false;
+        bool showScaleDropdown = false;
+
+        // looking at object controls
+        bool showSelectButton = false;
+        bool showDuplicateButton = false;
+        bool showDeleteButton = false;
+        
+        if (newMode == EditorMode.None) {
+            // looking at nothing 
+        } else if (newMode == EditorMode.LookingAtObject) {
+            showSelectButton = true;
+            showDuplicateButton = true;
+            showDeleteButton = true;
+        } else if (newMode == EditorMode.SelectedObject) {
+            showSelectButton = true;
+            showScaleSlider = true;
+            showRotateSlider = true;
+            showRotateDropdown = true;
+            showScaleDropdown = true;
+
+            // set values back 
+            if (selectedItem != null) {
+                DropdownValueChange();
+                ScaleDropdownValueChange();
+            }
+        } else if (newMode == EditorMode.Camera) {
+            // renderer, take shot, delete, select, duplicate 
+            showSelectButton = true;
+            showDuplicateButton = true;
+            showDeleteButton = true;
+        }
+
+        scaleSlider.gameObject.SetActive(showScaleSlider);
+        rotateSlider.gameObject.SetActive(showRotateSlider);
+        rotationDropdown.gameObject.SetActive(showRotateDropdown);
+        scaleDropdown.gameObject.SetActive(showScaleDropdown);
+
+        selectButton.gameObject.SetActive(showSelectButton);
+        duplicateButton.gameObject.SetActive(showDuplicateButton);
+        deleteButton.gameObject.SetActive(showDeleteButton);
+
+        currentEditMode = newMode;
     }
 
     // Menu Toggles
@@ -60,6 +143,17 @@ public class EditorToggleButton : MonoBehaviour {
         }
     }
 
+    public void OnClickDelete() {
+        if (selectedItem != null) {
+            TeleportalAr.Shared.DeleteItem(selectedItem.Id);
+        }
+    }
+
+    public void OnClickDuplicate() {
+        // TODO: grab all children and new empty node with clones of each 
+        // 
+    }
+
     private void setIsMoving(bool isMoving) {
         if (selectedItem == null) {
             isMoving = false;
@@ -67,7 +161,6 @@ public class EditorToggleButton : MonoBehaviour {
         }
 
         isMovingObject = isMoving;
-        setShouldShowEditor(isMoving);
         
         float alpha = 1.0f;
 
@@ -85,12 +178,14 @@ public class EditorToggleButton : MonoBehaviour {
             selectedItem.gameObject.transform.SetParent(floor.transform);
         }
 
-        // selectedItem.gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
         for (int i = 0; i < selectedItem.gameObject.transform.childCount; i++) {
-            selectedItem.gameObject.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
+            MeshRenderer renderer = selectedItem.gameObject.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>();
+            if (renderer != null) {
+                renderer.material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
+            }
         }
         
-        if (!isMoving) {
+        if (!isMovingObject) {
             selectedItem = null;
         }
 
@@ -99,12 +194,26 @@ public class EditorToggleButton : MonoBehaviour {
     // Slider Changes
 
     public void ScaleValueChange() {
-        if (selectedItem != null) {
-            if (selectedItem.gameObject.name.Equals("Floor")) {
-                floor.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
-            } else {
-                selectedItem.gameObject.transform.localScale = new Vector3(scaleSlider.value, scaleSlider.value, scaleSlider.value);
-            }
+        if (selectedItem == null) {
+            return;
+        }
+
+        if (ignoreThisChange) {
+            ignoreThisChange = false;
+            return;
+        }
+
+        Vector3 scale = selectedItem.gameObject.transform.localScale;
+
+        Vector3 scaleVector = new Vector3(
+                scaleDropdown.value == 0 || scaleDropdown.value == 3 ? scaleSlider.value : scale.x, 
+                scaleDropdown.value == 1 || scaleDropdown.value == 3 ? scaleSlider.value : scale.y,
+                scaleDropdown.value == 2 || scaleDropdown.value == 3 ? scaleSlider.value : scale.z);
+
+        if (selectedItem.gameObject.name.Equals("Floor")) {
+            floor.transform.localScale = scaleVector;
+        } else {
+            selectedItem.gameObject.transform.localScale = scaleVector;
         }
     }
 
@@ -118,13 +227,12 @@ public class EditorToggleButton : MonoBehaviour {
             return;
         }
 
-        RotationMode rotationMode = getRotationMode();
         Vector3 angles = selectedItem.gameObject.transform.eulerAngles;
 
         Vector3 rotationVector = new Vector3(
-                rotationMode == RotationMode.X ? rotateSlider.value : angles.x, 
-                rotationMode == RotationMode.Y ? rotateSlider.value : angles.y,
-                rotationMode == RotationMode.Z ? rotateSlider.value : angles.z);
+                rotationDropdown.value == 0 ? rotateSlider.value : angles.x, 
+                rotationDropdown.value == 1 ? rotateSlider.value : angles.y,
+                rotationDropdown.value == 2 ? rotateSlider.value : angles.z);
 
         if (selectedItem.gameObject.name.Equals("Floor")) {
             floor.transform.eulerAngles = rotationVector;
@@ -133,29 +241,19 @@ public class EditorToggleButton : MonoBehaviour {
         }
     }
 
-    // TODO: select floor, affect all world --done--
-    // TODO: nothing selected, disable menu --done--
-    // TODO: transluecent for all children --done--
-    // TODO: let go is not being set back to prev parent --done--
-    // TODO: on rotate, sets other axis to 0 --done--
-    // TOOD: opacity not being set back to full on let go --done--
-    // TODO: scale slider isnt being full or whatever
-
     bool ignoreThisChange = false;
     public void DropdownValueChange() {
         if (selectedItem == null) {
             return;
         }
 
-        RotationMode rotationMode = getRotationMode();
-
         float newValue;
         
         Transform transform = selectedItem.gameObject.name.Equals("Floor") ? floor.transform : selectedItem.gameObject.transform;
 
-        if (rotationMode == RotationMode.X) {
+        if (rotationDropdown.value == 0) {
             newValue = transform.eulerAngles.x;
-        } else if (rotationMode == RotationMode.Y) {
+        } else if (rotationDropdown.value == 1) {
             newValue = transform.eulerAngles.y;
         } else {
             newValue = transform.eulerAngles.z;
@@ -167,20 +265,27 @@ public class EditorToggleButton : MonoBehaviour {
         rotateSlider.value = newValue;
     }
 
-    private RotationMode getRotationMode() {
-        RotationMode rotationMode;
-
-        if (rotationDropdown.value == 0) {
-            rotationMode = RotationMode.X;
-        } else if (rotationDropdown.value == 1) {
-            rotationMode = RotationMode.Y;
-        } else {
-            rotationMode = RotationMode.Z;
+    public void ScaleDropdownValueChange() {
+        if (selectedItem == null) {
+            return;
         }
 
-        return rotationMode;
-    }
+        float newValue;
+        
+        Transform transform = selectedItem.gameObject.name.Equals("Floor") ? floor.transform : selectedItem.gameObject.transform;
 
-    // TODO: Move should be a toggle
+        if (scaleDropdown.value == 0) {
+            newValue = transform.localScale.x;
+        } else if (scaleDropdown.value == 1) {
+            newValue = transform.localScale.y;
+        } else if (scaleDropdown.value == 2) {
+            newValue = transform.localScale.z;
+        } else {
+            newValue = transform.localScale.x;
+        }
+
+        ignoreThisChange = true;
+        scaleSlider.value = newValue;
+    }
 
 }
