@@ -9,31 +9,29 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1149976139542550}
+  m_RootGameObject: {fileID: 1691218152957064}
   m_IsPrefabAsset: 1
---- !u!1 &1149976139542550
+--- !u!1 &1691218152957064
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 1691218152957064, guid: b24fb050b2f8e44c0a644ec14a2be4c9,
-    type: 2}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4414147155080120}
+  - component: {fileID: 4189884068239988}
   m_Layer: 0
-  m_Name: H_composar.cube
+  m_Name: H_composar.camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4414147155080120
+--- !u!4 &4189884068239988
 Transform:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 4189884068239988, guid: b24fb050b2f8e44c0a644ec14a2be4c9,
-    type: 2}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1149976139542550}
+  m_GameObject: {fileID: 1691218152957064}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
