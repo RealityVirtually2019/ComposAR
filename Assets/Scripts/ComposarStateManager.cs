@@ -20,7 +20,7 @@ public class ComposarStateManager : MonoBehaviour {
 	private Project CurrentProject;
 	private string CurrentSceneName;
 	private ComposarMode CurrentMode;
-	private RenderTexture CurrentScrenshot;
+	private Texture2D CurrentScrenshot;
 
 	/* Lifecycle */
 
@@ -65,11 +65,11 @@ public class ComposarStateManager : MonoBehaviour {
 		this.CurrentProject = project;
 	}
 
-	public RenderTexture GetCurrentScreenshot() {
+	public Texture2D GetCurrentScreenshot() {
 		return this.CurrentScrenshot;
 	}
 
-	public void SetCurrentScreenshot(RenderTexture screenshot) {
+	public void SetCurrentScreenshot(Texture2D screenshot) {
 		this.CurrentScrenshot = screenshot;
 		DrawPlaneMaterial.SetTexture("_MainTex", this.CurrentScrenshot);
 	}
@@ -85,7 +85,7 @@ public class ComposarStateManager : MonoBehaviour {
 		SceneManager.LoadScene(newSceneName, LoadSceneMode.Additive);
 
 		// Unload existing scene (if there is one)
-		if (this.CurrentSceneName != null && newSceneName != "Paint") {
+		if (this.CurrentSceneName != null) {
 			print("Unloading " + this.CurrentSceneName);
 			SceneManager.UnloadSceneAsync(this.CurrentSceneName);
 			

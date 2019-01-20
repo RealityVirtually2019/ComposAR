@@ -37,10 +37,10 @@ public class ComposarCamera : MonoBehaviour {
 	}
 
 	public void SaveImage() {
-		// Texture2D tex = this.GrabImage();
+		Texture2D tex = this.GrabImage();
 		
 		// Forward to Paint scene
-		ComposarStateManager.Shared.SetCurrentScreenshot(this.rentex);
+		ComposarStateManager.Shared.SetCurrentScreenshot(tex);
 		ComposarStateManager.Shared.SetMode(ComposarMode.SketchModels);
 
 		// TODO save to iOS/Android camera rolls

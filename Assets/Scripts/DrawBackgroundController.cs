@@ -101,6 +101,10 @@ public class DrawBackgroundController : MonoBehaviour
         StartCoroutine(CoSave("SavedImage"));
     }
 
+    public void SaveWithBg() {
+        StartCoroutine(CoSave("SavedImage"));
+    }
+
     private IEnumerator CoSave(string filename) {
         Debug.Log("Start CoSave");
         yield return new WaitForEndOfFrame();
@@ -114,6 +118,8 @@ public class DrawBackgroundController : MonoBehaviour
         var data = texture2D.EncodeToPNG();
         File.WriteAllBytes(Application.dataPath + "/SavedImages/" + filename + ".png", data);
         Debug.Log("3");
+
+        ComposarStateManager.Shared.SetMode(ComposarMode.Layout);
     }
 
     private IEnumerator CoSaveUp(string filename, bool setBackground) {
