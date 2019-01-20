@@ -83,9 +83,9 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     private void setEditorMode(EditorMode newMode) {
-        // if (newMode == currentEditMode) {
-        //     return; 
-        // }
+        if (newMode == currentEditMode) {
+            return; 
+        }
 
         bool showExitButton = false;
 
