@@ -68,7 +68,7 @@ public class EditorToggleButton : MonoBehaviour {
         if (selectedItem != null) {
             // Snap position to actualMovePosition
 
-            if (!snapGridToggle.isOn) {
+            if (snapGridToggle.isOn) {
                 Debug.Log("test");
                 float GridSnapSize = 0.25f; // meters
 
@@ -100,10 +100,11 @@ public class EditorToggleButton : MonoBehaviour {
                 */
 
                 // LOCAL ONLY version - selectedItem.gameObject.transform.position = snappedPosition;
-                //TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, selectedObjectEulerAngles.y, selectedObjectEulerAngles.x);
+                TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, selectedObjectEulerAngles.y, selectedObjectEulerAngles.x);
+            } else {
+                selectedItem.gameObject.transform.eulerAngles = selectedObjectEulerAngles;
             }
 
-            selectedItem.gameObject.transform.eulerAngles = selectedObjectEulerAngles;
             
             newEditorMode = EditorMode.SelectedObject;
         } else {
@@ -328,10 +329,6 @@ public class EditorToggleButton : MonoBehaviour {
              if (!snapGridToggle.isOn) {
                 TeleportalAr.Shared.ReleaseItem(selectedItem);
             } 
-
-            if (actuallySelectedObject != null)  {
-                Destroy(actuallySelectedObject);
-            }
             
             selectedItem.gameObject.transform.SetParent(null);
             selectedItem.gameObject.transform.SetParent(floor.transform);
