@@ -44,7 +44,6 @@ public class EditorToggleButton : MonoBehaviour {
 
     // TODO: EnableRender DisableRender in ComposerCamera (where grabImage is)
     // TODO: snap rotation scale 
-    // TODO: snap grid is toggle 
 
     void Awake() {
         EditorToggleButton.Shared = this;
@@ -60,8 +59,6 @@ public class EditorToggleButton : MonoBehaviour {
         rotationDropdown.onValueChanged.AddListener(delegate { DropdownValueChange(); });
         scaleDropdown.onValueChanged.AddListener(delegate { ScaleDropdownValueChange(); });
 
-
-        
         setEditorMode(EditorMode.None);
 	}
 
@@ -386,10 +383,14 @@ public class EditorToggleButton : MonoBehaviour {
 
         Vector3 angles = selectedItem.gameObject.transform.eulerAngles;
 
+        float angleSnap = 15; // degrees 
+
+        float snappedAngle = (float) Math.Round(rotateSlider.value / angleSnap) * angleSnap;
+        
         Vector3 rotationVector = new Vector3(
-                rotationDropdown.value == 0 ? rotateSlider.value : angles.x, 
-                rotationDropdown.value == 1 ? rotateSlider.value : angles.y,
-                rotationDropdown.value == 2 ? rotateSlider.value : angles.z);
+                rotationDropdown.value == 0 ? snappedAngle : angles.x, 
+                rotationDropdown.value == 1 ? snappedAngle : angles.y,
+                rotationDropdown.value == 2 ? snappedAngle : angles.z);
 
         selectedObjectEulerAngles = rotationVector;
     }
