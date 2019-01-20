@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 enum EditorMode { Camera, LookingAtObject, SelectedObject, None }
 
@@ -35,9 +36,11 @@ public class EditorToggleButton : MonoBehaviour {
     public RawImage cameraDisplay;
 
     public Text selectButtonText;
+    public Toggle snapGridToggle;
 
+    private Vector3 selectedObjectEulerAngles = Vector3.zero;
     private EditorMode currentEditMode = EditorMode.SelectedObject;
-    private float zRotation = 0;
+    private GameObject actuallySelectedObject;
 
     void Awake() {
         EditorToggleButton.Shared = this;
@@ -62,7 +65,38 @@ public class EditorToggleButton : MonoBehaviour {
 
         // they already have an item, so they are moving an object 
         if (selectedItem != null) {
-            selectedItem.gameObject.transform.eulerAngles = new Vector3(selectedItem.gameObject.transform.eulerAngles.x, selectedItem.gameObject.transform.eulerAngles.y, zRotation);
+            selectedItem.gameObject.transform.eulerAngles = selectedObjectEulerAngles;
+            // Snap position to actualMovePosition
+            float GridSnapSize = 0.25f; // meters
+
+            Vector3 snappedPosition = actuallySelectedObject.transform.position;
+            snappedPosition.x = (float) Math.Round(snappedPosition.x / GridSnapSize) * GridSnapSize;
+            snappedPosition.y = (float) Math.Round(snappedPosition.y / GridSnapSize) * GridSnapSize;
+            snappedPosition.z = (float) Math.Round(snappedPosition.z / GridSnapSize) * GridSnapSize;
+            
+            /* Experiments:
+            float div = 5.0f;
+            double k = 0.1;
+            Debug.Log("actual transfor x " + Math.Abs(actuallySelectedObject.transform.position.x) % 2);
+            Debug.Log("actual transfor y " + Math.Abs(actuallySelectedObject.transform.position.y) % 2);
+            Debug.Log("actual transfor z " + Math.Abs(actuallySelectedObject.transform.position.z) % 2);
+
+            Vector3 snappedPosition = new Vector3(
+                Math.Abs(actuallySelectedObject.transform.position.x) % 2 <= k ? actuallySelectedObject.transform.position.x : selectedItem.gameObject.transform.position.x, 
+                Math.Abs(actuallySelectedObject.transform.position.y) % 2 <= k ? actuallySelectedObject.transform.position.y : selectedItem.gameObject.transform.position.y, 
+                Math.Abs(actuallySelectedObject.transform.position.z) % 2 <= k ? actuallySelectedObject.transform.position.z : selectedItem.gameObject.transform.position.z); 
+
+            float absX = Math.Abs(actuallySelectedObject.transform.position.x - actuallySelectedObject.transform.position.x) % div;
+            float absY = Math.Abs(actuallySelectedObject.transform.position.y - actuallySelectedObject.transform.position.y) % div;
+            float absZ = Math.Abs(actuallySelectedObject.transform.position.z - actuallySelectedObject.transform.position.z) % div;
+            print(absX);
+            print(absY);
+            print(absZ);
+            snappedPosition.y = absY < k ? actuallySelectedObject.transform.position.y : selectedItem.gameObject.transform.position.y;
+            snappedPosition.z = absZ < k ? actuallySelectedObject.transform.position.z : selectedItem.gameObject.transform.position.z;
+            */
+
+            selectedItem.gameObject.transform.position = snappedPosition;
             newEditorMode = EditorMode.SelectedObject;
         } else {
             XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
@@ -179,6 +213,7 @@ public class EditorToggleButton : MonoBehaviour {
     // Menu Toggles
 
     public void OnClickSpawn() {
+        // TODO: should set rotation to 0 
         TeleportalInventory.Shared.UseCurrent();
     }
 
@@ -189,6 +224,7 @@ public class EditorToggleButton : MonoBehaviour {
         } else {
             // pickup object
             selectedItem = XRItemRaycaster.Shared.ItemFocus;
+            selectedObjectEulerAngles = selectedItem.transform.eulerAngles;
             setIsMoving(true);
         }
     }
@@ -245,6 +281,7 @@ public class EditorToggleButton : MonoBehaviour {
         newItem.gameObject.transform.localScale = new Vector3(selected.localScale.x, selected.localScale.y, selected.localScale.y);
         
         selectedItem = lookingAt;
+        selectedObjectEulerAngles = selectedItem.transform.eulerAngles;
         setIsMoving(true);
     }
 
@@ -262,12 +299,23 @@ public class EditorToggleButton : MonoBehaviour {
             selectButtonText.text = "Unselect";
             // prevent floor from being added 
             if (!selectedItem.gameObject.name.Equals("Floor")) {
-                TeleportalAr.Shared.HoldItem(selectedItem);
+                if (snapGridToggle.isOn) {
+                    actuallySelectedObject = new GameObject();
+                    actuallySelectedObject.transform.position = selectedItem.gameObject.transform.position;
+                    actuallySelectedObject.transform.SetParent(TeleportalAr.Shared.CurrentCamera.transform);
+                } else {
+                    TeleportalAr.Shared.HoldItem(selectedItem);
+                }
             }
+            
             alpha = 0.5f;
         } else {
             selectButtonText.text = "Select";
-            TeleportalAr.Shared.ReleaseItem(selectedItem);
+
+             if (!snapGridToggle.isOn) {
+                TeleportalAr.Shared.ReleaseItem(selectedItem);
+            } 
+
             selectedItem.gameObject.transform.SetParent(null);
             selectedItem.gameObject.transform.SetParent(floor.transform);
         }
@@ -328,11 +376,7 @@ public class EditorToggleButton : MonoBehaviour {
                 rotationDropdown.value == 1 ? rotateSlider.value : angles.y,
                 rotationDropdown.value == 2 ? rotateSlider.value : angles.z);
 
-        if (selectedItem.gameObject.name.Equals("Floor")) {
-            floor.transform.eulerAngles = rotationVector;
-        } else {
-            selectedItem.gameObject.transform.eulerAngles = rotationVector;
-        }
+        selectedObjectEulerAngles = rotationVector;
     }
 
     bool ignoreThisChange = false;
@@ -342,15 +386,13 @@ public class EditorToggleButton : MonoBehaviour {
         }
 
         float newValue;
-        
-        Transform transform = selectedItem.gameObject.name.Equals("Floor") ? floor.transform : selectedItem.gameObject.transform;
-
+                
         if (rotationDropdown.value == 0) {
-            newValue = transform.eulerAngles.x;
+            newValue = selectedObjectEulerAngles.x;
         } else if (rotationDropdown.value == 1) {
-            newValue = transform.eulerAngles.y;
+            newValue = selectedObjectEulerAngles.y;
         } else {
-            newValue = transform.eulerAngles.z;
+            newValue = selectedObjectEulerAngles.z;
         }
 
         ignoreThisChange = true;

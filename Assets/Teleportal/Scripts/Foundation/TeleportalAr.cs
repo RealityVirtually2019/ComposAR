@@ -199,7 +199,12 @@ public class TeleportalAr : MonoBehaviour {
     XRItem item = itemGO.GetComponent<XRItem>();
     item.SetId(id);
     item.SetLocation(lat, y, lon);
-    item.SetRotation(heading, pitch);
+    // // TP // makes so placement does not have specific rotation as camera unless placing a camera object 
+    if (!type.Contains("camera")) {
+      item.SetRotation(0, 0);
+    } else {
+      item.SetRotation(heading, pitch);
+    }
 
     // Reposition
     item.Reposition();
