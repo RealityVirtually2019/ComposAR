@@ -4,19 +4,13 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class DrawBackgroundController : MonoBehaviour
+public class DrawBackgroundController2 : MonoBehaviour
 {
 
     private LineController lineController;
-    public enum Side {F, S};
-    private int currentState = 0;
-    // 0 = None
-    // 1 = Front
-    // 2 = Side
-    // 3 = Done
 
-    // private enum State { None, Front, Side, Done };
-    // private State currentState = State.None;
+    private enum State { None, Front, Side, Done };
+    private State currentState = State.None;
 
     // public GameObject BackgroundPlane;
     public Material frontPlane;
@@ -26,35 +20,28 @@ public class DrawBackgroundController : MonoBehaviour
         Debug.Log("State starts as: " + currentState);
         lineController = LineController.Shared; 
         setBackgroundImage("Assets/test.jpg");
+        currentState = State.None;
     }
 
-    //getters for state
-    bool isFront() {
-        return currentState == 1;
-    }
-    bool isSide() {
-        return currentState == 2;
-    }
-
+    bool doneSave = false;
     public void Next() {
         Debug.Log("Next() CS: " + currentState);
-        if (currentState == 0) {
-
+        if (currentState == State.None) {
+            Debug.Log("None -> Front");
             // Save front
-            Save("sketch-F-0");
-            // Debug.Log("Saved");
-            // ICanSeeClearlyNowThatTheRainIsGone();
-            // setBackgroundImage("/SavedImages/sketch-F-0.png");
-            currentState = 1;
-        } else if (currentState == 1) {
+            SaveAndClear("sketch-F-0");
+            while (!doneSave) {}
+            setBackgroundImage("/SavedImages/sketch-F-0.png");
+            currentState = State.Front;
+        } else if (currentState == State.Front) {
             // Save("sketch-S-0");
-            currentState = 2;
-        } else if (currentState == 2) {
+            currentState = State.Side;
+        } else if (currentState == State.Side) {
             // SendToServer();
-            currentState = 3;
+            currentState = State.Done;
         } else {
             // Reset
-            currentState = 0;
+            currentState = State.None;
         }
     }
 
@@ -86,13 +73,14 @@ public class DrawBackgroundController : MonoBehaviour
         }
     }
 
-    private void SaveUp(string filename, bool setBackground) {
-        StartCoroutine(CoSaveUp(filename, setBackground));
-    }
-
     public void Save(string filename) {
         setBackgroundImage("Assets/reset.png");
         StartCoroutine(CoSave(filename));
+    }
+
+    public void SaveAndClear(string filename) {
+        setBackgroundImage("Assets/reset.png");
+        StartCoroutine(CoSaveClear(filename));
     }
 
     public void Save() {
@@ -116,8 +104,7 @@ public class DrawBackgroundController : MonoBehaviour
         Debug.Log("3");
     }
 
-    private IEnumerator CoSaveUp(string filename, bool setBackground) {
-        Debug.Log("Start CoSave");
+    private IEnumerator CoSaveClear(string filename) {
         yield return new WaitForEndOfFrame();
 
         RenderTexture.active = SaveTexture;
@@ -125,17 +112,13 @@ public class DrawBackgroundController : MonoBehaviour
         var texture2D = new Texture2D(SaveTexture.width, SaveTexture.height);
         texture2D.ReadPixels(new Rect(0, 0, SaveTexture.width, SaveTexture.height), 0, 0);
         texture2D.Apply();
-        Debug.Log("2");
         var data = texture2D.EncodeToPNG();
         File.WriteAllBytes(Application.dataPath + "/SavedImages/" + filename + ".png", data);
-        Debug.Log("3");
 
-        if (setBackground) {
-            setBackgroundImage(Application.dataPath + "/SavedImages/" + filename + ".png");
-        }
+        doneSave = true;
+
         ICanSeeClearlyNowThatTheRainIsGone();
     }
-
     public void setBackgroundImage(string filePath) {
         if (!System.IO.File.Exists(filePath)) {
             Debug.Log("File not found '" + filePath + "'");
@@ -155,6 +138,6 @@ public class DrawBackgroundController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        Debug.Log(currentState);
+        // Debug.Log(currentState);
     }
 }
