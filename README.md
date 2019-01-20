@@ -1,6 +1,6 @@
-# ComposAR
+# AnimAid
   
-**ComposAR is the ultimate tool for rapid protyping of story concepts.**
+** AnimAid (formerly ComposAR) is the ultimate tool for rapid protyping of story concepts.**
 
 # Features
 
