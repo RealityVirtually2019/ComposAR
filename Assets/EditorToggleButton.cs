@@ -43,6 +43,8 @@ public class EditorToggleButton : MonoBehaviour {
     private GameObject actuallySelectedObject;
 
     // TODO: EnableRender DisableRender in ComposerCamera (where grabImage is)
+    // TODO: snap rotation scale 
+    
     void Awake() {
         EditorToggleButton.Shared = this;
     }
