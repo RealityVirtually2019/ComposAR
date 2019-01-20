@@ -58,9 +58,18 @@ public class ProjectUIManager : MonoBehaviour {
 
 
     public void OpenSequenceScene(){
-        //TODO tom
-        // loadScene ("Sequence")
+        // Get current project
+        Project project = ComposarStateManager.Shared.GetCurrentProject();
+
+        // Null check
+        if (project == null) {
+            print("Current Project is Null (does not exist). Cannot open sequence scene :/");
+            return;
+        }
+
+        // Load sequence in Project by name
         print("\nOpening Seqeunce scene i hope");
+        project.LoadSequence("Sequence");
     }
 
     public void LoadSelected(){
@@ -68,8 +77,7 @@ public class ProjectUIManager : MonoBehaviour {
         print("\nLoading selected");
 
         print(selected);
-        //TODO TOM
-        //Composar.StateManager.Shared.LoadSequece(name)selected);
+        ComposarStateManager.Shared.GetCurrentProject().LoadSequence(selected);
         OpenSequenceScene();
     }
 
@@ -78,9 +86,8 @@ public class ProjectUIManager : MonoBehaviour {
         if (name.Length > 0){
             print("\nMAKING sq");
             print(name);
-            // TODO TOM 
-            //ComposarStateManager.Shared.MakeSequence(name);
-            //Composar.StateManager.Shared.LoadSequece(name);
+            ComposarStateManager.Shared.GetCurrentProject().MakeSequence(name);
+            ComposarStateManager.Shared.GetCurrentProject().LoadSequence(name);
         } else {
             print("sq name is empty");
             return;
