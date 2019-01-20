@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 114305954514724376}
   - component: {fileID: 114296251465635294}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: Project Setup UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1254,7 +1254,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create New Sequence
+  m_Text: Create New Project
 --- !u!114 &114335251977651006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1599,7 +1599,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Load Sequence
+  m_Text: Load Project
 --- !u!114 &114632187762966584
 MonoBehaviour:
   m_ObjectHideFlags: 1
