@@ -18,8 +18,12 @@ return_val = 'no'
 def doEverything():
   print(request.files)
   for key, file  in request.files.items():
-    file.save('./../../../Data/CharacterDraw/sketch/' + file.filename)
-  # main.main()
+    print(file.filename + "<<<<<<<<")
+    # file.save('./../../../Data/CharacterDraw/hires/m1/' + file.filename)
+    im = Image.open(file)
+    imsmall = im.resize((256, 256))
+    imsmall.save('./../../../Data/CharacterDraw/sketch/m1/' + file.filename)
+  main.main()
   global return_val
   print("Starting points build")
   args = "ReconstructMesh.exe 1 FS ./../../../Data/CharacterDraw/hires/m1/ ./../../../Data/CharacterDraw/output/images/m1/ ./../../../Data/CharacterDraw/output/reconstruct/m1/ ./../../../Data/CharacterDraw/view/view.off --skip_optimization"
