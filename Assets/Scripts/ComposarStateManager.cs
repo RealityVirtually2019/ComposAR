@@ -16,6 +16,7 @@ public class ComposarStateManager : MonoBehaviour {
 	private Project CurrentProject;
 	private string CurrentSceneName;
 	private ComposarMode CurrentMode;
+	private RenderTexture CurrentScrenshot;
 
 	/* Lifecycle */
 
@@ -60,8 +61,15 @@ public class ComposarStateManager : MonoBehaviour {
 		this.CurrentProject = project;
 	}
 
-	/* Scenes */
+	public RenderTexture GetCurrentScreenshot() {
+		return this.CurrentScrenshot;
+	}
 
+	public void SetCurrentScreenshot(RenderTexture screenshot) {
+		this.CurrentScrenshot = screenshot;
+	}
+
+	/* Scenes */
 	protected void ChangeScene(string sceneName) {
 		if (this.CurrentSceneName == sceneName) {
 			print("Trying to change scene to self ; already exists! Skipping...");

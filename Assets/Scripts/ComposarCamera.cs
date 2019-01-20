@@ -24,6 +24,7 @@ public class ComposarCamera : MonoBehaviour {
 	}
 
 	public RenderTexture GetRenderTexture() {
+		ComposarStateManager.Shared.SetCurrentScreenshot(this.rentex);
 		return this.rentex;
 	}
 
