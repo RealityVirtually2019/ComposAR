@@ -42,8 +42,8 @@ public class SequenceUIManager : MonoBehaviour {
         addSeqPanel.SetActive(false);
         modelsPanel.SetActive(false);
 
-        // TODO TOM get curr proj name from state and set
-        //currProjText.text = ????
+        // Get curr proj name from state and set
+        currProjText.text = ComposarStateManager.Shared.GetCurrentProject().GetName();
 
         backButton.onClick.AddListener(() => Back());
         layoutSelectedSeqButton.onClick.AddListener(() => Layout());
@@ -96,15 +96,16 @@ public class SequenceUIManager : MonoBehaviour {
     }
 
     public void Back() {
-        //TODO tom, load back scene. In this case, 'Project'
+        // Head back to Project
+        ComposarStateManager.Shared.SetMode(ComposarMode.SetupProject);
     }
 
     public void Layout(){
         //TODO tom, set state for selected Sequence
         string selectedSeq = sequenceDropdown.options[sequenceDropdown.value].text;
-        // TODO tom load scene based on ^ 
-        // also set the state on
 
+        // load layout editor
+        ComposarStateManager.Shared.SetMode(ComposarMode.Layout);
     }
 
     public void NewSequencePanel() {

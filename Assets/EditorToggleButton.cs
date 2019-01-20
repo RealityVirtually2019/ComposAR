@@ -228,7 +228,7 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     public void OnClickExit() {
-        ComposarStateManager.Shared.SetMode(ComposarMode.SetupProject);
+        ComposarStateManager.Shared.SetMode(ComposarMode.SetupSequence);
     }
 
     public void OnDuplication(string id, XRItem newItem) {

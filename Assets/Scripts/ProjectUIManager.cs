@@ -84,9 +84,8 @@ public class ProjectUIManager : MonoBehaviour {
     public void CreateAndLoad(){
         string n = newProjNameInput.text;
         if (n.Length > 0){
-            print("\nMAKING proj");
-            print(name);
-            Project project = new Project("test");
+            print("\nMAKING proj: " + name);
+            Project project = new Project(n);
             ComposarStateManager.Shared.AddProject(project);
             ComposarStateManager.Shared.SetCurrentProject(project);
             project.MakeSequence(name);

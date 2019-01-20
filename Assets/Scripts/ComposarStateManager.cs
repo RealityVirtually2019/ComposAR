@@ -63,19 +63,26 @@ public class ComposarStateManager : MonoBehaviour {
 	/* Scenes */
 
 	protected void ChangeScene(string sceneName) {
+		if (this.CurrentSceneName == sceneName) {
+			print("Trying to change scene to self ; already exists! Skipping...");
+			return;
+		}
+
+		// Load a new scene
+		SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+
 		// Unload existing scene (if there is one)
 		if (this.CurrentSceneName != null) {
+			print("Unloading " + this.CurrentSceneName);
 			SceneManager.UnloadSceneAsync(this.CurrentSceneName);
 			
 			// Handle Teleportal AR
 			if (this.CurrentSceneName == "Layout") {
 				SceneManager.UnloadSceneAsync("Teleportal");
 			}
-			
 		}
 		
-		// Load a new one
-		SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+		// Set new scene name
 		this.CurrentSceneName = sceneName;
 	}
 	
