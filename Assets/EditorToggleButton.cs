@@ -194,7 +194,10 @@ public class EditorToggleButton : MonoBehaviour {
     public void OnClickDuplicate() {
         waitingForDuplication = true;
 
-        int slot = 0; // TODO: grab slot by comparing inventory item to looked at name  
+        int slot = 0; // TODO: grab slot by comparing inventory item to looked at name
+        for (TeleportalInventory.Shared.) {
+
+        }
         int lastSlot = TeleportalInventory.Shared.CurrentItem.id;
 
         TeleportalInventory.Shared.SetItem(slot);
@@ -223,7 +226,6 @@ public class EditorToggleButton : MonoBehaviour {
         }
         
         Transform selected = lookingAt.gameObject.transform;
-        // TODO: remove duplication for floor, if floor, do not even  show duplication
         TeleportalAr.Shared.MoveItem(id, selected.position.x, selected.position.y, selected.position.z, selected.eulerAngles.y, selected.eulerAngles.x);
         
         newItem.gameObject.transform.eulerAngles = new Vector3(selected.eulerAngles.x, selected.eulerAngles.y, selected.eulerAngles.z);
