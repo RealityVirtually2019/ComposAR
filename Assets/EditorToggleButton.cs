@@ -37,6 +37,7 @@ public class EditorToggleButton : MonoBehaviour {
     public Text selectButtonText;
 
     private EditorMode currentEditMode = EditorMode.SelectedObject;
+    private float zRotation = 0;
 
     void Awake() {
         EditorToggleButton.Shared = this;
@@ -55,11 +56,13 @@ public class EditorToggleButton : MonoBehaviour {
         setEditorMode(EditorMode.None);
 	}
 
+    // i guess they never miss, huh?
     void Update() {
         EditorMode newEditorMode = EditorMode.None;
 
         // they already have an item, so they are moving an object 
         if (selectedItem != null) {
+            selectedItem.gameObject.transform.eulerAngles = new Vector3(selectedItem.gameObject.transform.eulerAngles.x, selectedItem.gameObject.transform.eulerAngles.y, zRotation);
             newEditorMode = EditorMode.SelectedObject;
         } else {
             XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
