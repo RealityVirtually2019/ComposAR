@@ -245,7 +245,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &582034090
 GameObject:
@@ -259,6 +259,7 @@ GameObject:
   - component: {fileID: 582034093}
   - component: {fileID: 582034092}
   - component: {fileID: 582034091}
+  - component: {fileID: 582034095}
   m_Layer: 0
   m_Name: Draw Background
   m_TagString: Untagged
@@ -339,6 +340,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: -90, z: 89.99999}
+--- !u!114 &582034095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582034090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485f1fc402c1b3d0cbc739084e594067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontPlane: {fileID: 2100000, guid: d01d2640d3ced61d2b2deb2d808b9559, type: 2}
+  SaveTexture: {fileID: 8400000, guid: ab3dfbeeedfda0749bbb0af3cef258c1, type: 2}
 --- !u!1 &1073086694
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,13 +628,13 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 55
+  orthographic size: 50
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: ab3dfbeeedfda0749bbb0af3cef258c1, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -638,51 +653,6 @@ Transform:
   m_GameObject: {fileID: 1702067881}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1954285613
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1954285615}
-  - component: {fileID: 1954285614}
-  m_Layer: 0
-  m_Name: Draw Background Controller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1954285614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954285613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 485f1fc402c1b3d0cbc739084e594067, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BackgroundPlane: {fileID: 582034090}
-  frontPlane: {fileID: 2100000, guid: d01d2640d3ced61d2b2deb2d808b9559, type: 2}
---- !u!4 &1954285615
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954285613}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.0689125, y: -11.038612, z: 210.61719}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -738,7 +708,7 @@ PrefabInstance:
     - target: {fileID: 4621621771307253846, guid: 77a1282885d15e5f09911505cb1262f6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4621621771307253846, guid: 77a1282885d15e5f09911505cb1262f6,
         type: 3}
@@ -804,6 +774,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621621771421887418, guid: 77a1282885d15e5f09911505cb1262f6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621621771421887418, guid: 77a1282885d15e5f09911505cb1262f6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621621771421887418, guid: 77a1282885d15e5f09911505cb1262f6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621621771421887418, guid: 77a1282885d15e5f09911505cb1262f6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 582034095}
+    - target: {fileID: 4621621771421887418, guid: 77a1282885d15e5f09911505cb1262f6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Save
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621621771421887418, guid: 77a1282885d15e5f09911505cb1262f6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77a1282885d15e5f09911505cb1262f6, type: 3}
