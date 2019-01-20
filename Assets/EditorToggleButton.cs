@@ -71,37 +71,41 @@ public class EditorToggleButton : MonoBehaviour {
         if (selectedItem != null) {
             selectedItem.gameObject.transform.eulerAngles = selectedObjectEulerAngles;
             // Snap position to actualMovePosition
-            float GridSnapSize = 0.25f; // meters
 
-            Vector3 snappedPosition = actuallySelectedObject.transform.position;
-            snappedPosition.x = (float) Math.Round(snappedPosition.x / GridSnapSize) * GridSnapSize;
-            snappedPosition.y = (float) Math.Round(snappedPosition.y / GridSnapSize) * GridSnapSize;
-            snappedPosition.z = (float) Math.Round(snappedPosition.z / GridSnapSize) * GridSnapSize;
+            if (snapGridToggle.isOn) {
+                float GridSnapSize = 0.25f; // meters
+
+                Vector3 snappedPosition = actuallySelectedObject.transform.position;
+                snappedPosition.x = (float) Math.Round(snappedPosition.x / GridSnapSize) * GridSnapSize;
+                snappedPosition.y = (float) Math.Round(snappedPosition.y / GridSnapSize) * GridSnapSize;
+                snappedPosition.z = (float) Math.Round(snappedPosition.z / GridSnapSize) * GridSnapSize;
             
-            /* Experiments:
-            float div = 5.0f;
-            double k = 0.1;
-            Debug.Log("actual transfor x " + Math.Abs(actuallySelectedObject.transform.position.x) % 2);
-            Debug.Log("actual transfor y " + Math.Abs(actuallySelectedObject.transform.position.y) % 2);
-            Debug.Log("actual transfor z " + Math.Abs(actuallySelectedObject.transform.position.z) % 2);
+                /* Experiments:
+                float div = 5.0f;
+                double k = 0.1;
+                Debug.Log("actual transfor x " + Math.Abs(actuallySelectedObject.transform.position.x) % 2);
+                Debug.Log("actual transfor y " + Math.Abs(actuallySelectedObject.transform.position.y) % 2);
+                Debug.Log("actual transfor z " + Math.Abs(actuallySelectedObject.transform.position.z) % 2);
 
-            Vector3 snappedPosition = new Vector3(
-                Math.Abs(actuallySelectedObject.transform.position.x) % 2 <= k ? actuallySelectedObject.transform.position.x : selectedItem.gameObject.transform.position.x, 
-                Math.Abs(actuallySelectedObject.transform.position.y) % 2 <= k ? actuallySelectedObject.transform.position.y : selectedItem.gameObject.transform.position.y, 
-                Math.Abs(actuallySelectedObject.transform.position.z) % 2 <= k ? actuallySelectedObject.transform.position.z : selectedItem.gameObject.transform.position.z); 
+                Vector3 snappedPosition = new Vector3(
+                    Math.Abs(actuallySelectedObject.transform.position.x) % 2 <= k ? actuallySelectedObject.transform.position.x : selectedItem.gameObject.transform.position.x, 
+                    Math.Abs(actuallySelectedObject.transform.position.y) % 2 <= k ? actuallySelectedObject.transform.position.y : selectedItem.gameObject.transform.position.y, 
+                    Math.Abs(actuallySelectedObject.transform.position.z) % 2 <= k ? actuallySelectedObject.transform.position.z : selectedItem.gameObject.transform.position.z); 
 
-            float absX = Math.Abs(actuallySelectedObject.transform.position.x - actuallySelectedObject.transform.position.x) % div;
-            float absY = Math.Abs(actuallySelectedObject.transform.position.y - actuallySelectedObject.transform.position.y) % div;
-            float absZ = Math.Abs(actuallySelectedObject.transform.position.z - actuallySelectedObject.transform.position.z) % div;
-            print(absX);
-            print(absY);
-            print(absZ);
-            snappedPosition.y = absY < k ? actuallySelectedObject.transform.position.y : selectedItem.gameObject.transform.position.y;
-            snappedPosition.z = absZ < k ? actuallySelectedObject.transform.position.z : selectedItem.gameObject.transform.position.z;
-            */
+                float absX = Math.Abs(actuallySelectedObject.transform.position.x - actuallySelectedObject.transform.position.x) % div;
+                float absY = Math.Abs(actuallySelectedObject.transform.position.y - actuallySelectedObject.transform.position.y) % div;
+                float absZ = Math.Abs(actuallySelectedObject.transform.position.z - actuallySelectedObject.transform.position.z) % div;
+                print(absX);
+                print(absY);
+                print(absZ);
+                snappedPosition.y = absY < k ? actuallySelectedObject.transform.position.y : selectedItem.gameObject.transform.position.y;
+                snappedPosition.z = absZ < k ? actuallySelectedObject.transform.position.z : selectedItem.gameObject.transform.position.z;
+                */
 
-            // LOCAL ONLY version - selectedItem.gameObject.transform.position = snappedPosition;
-            TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, 0, 0);
+                // LOCAL ONLY version - selectedItem.gameObject.transform.position = snappedPosition;
+                TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, 0, 0);
+            }
+            
             newEditorMode = EditorMode.SelectedObject;
         } else {
             XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
@@ -129,9 +133,13 @@ public class EditorToggleButton : MonoBehaviour {
         
         if (currentEditMode == EditorMode.Camera && newMode != EditorMode.Camera) {
             // disable camera 
+<<<<<<< HEAD
+            // lookingAtItem.gameObject.GetComponent<ComposarCamera>().DisableRender();
+=======
             if (highlightedCamera != null) {
                 highlightedCamera.DisableRender();
             }
+>>>>>>> 1bbeb1362531f03ab8932f14d0b4f7861ef2cb96
         } else if (newMode == currentEditMode) {
             // double check if looking at floor, dup/delete button are deleted 
             if (newMode == EditorMode.LookingAtObject && lookingAtItem != null && !lookingAtItem.gameObject.transform.name.Contains("Floor")) {
@@ -381,10 +389,14 @@ public class EditorToggleButton : MonoBehaviour {
 
         Vector3 angles = selectedItem.gameObject.transform.eulerAngles;
 
+        float angleSnap = 15; // degrees 
+
+        float snappedAngle = (float) Math.Round(rotateSlider.value / angleSnap) * angleSnap;
+        
         Vector3 rotationVector = new Vector3(
-                rotationDropdown.value == 0 ? rotateSlider.value : angles.x, 
-                rotationDropdown.value == 1 ? rotateSlider.value : angles.y,
-                rotationDropdown.value == 2 ? rotateSlider.value : angles.z);
+                rotationDropdown.value == 0 ? snappedAngle : angles.x, 
+                rotationDropdown.value == 1 ? snappedAngle : angles.y,
+                rotationDropdown.value == 2 ? snappedAngle : angles.z);
 
         selectedObjectEulerAngles = rotationVector;
     }
