@@ -42,6 +42,7 @@ public class EditorToggleButton : MonoBehaviour {
     private EditorMode currentEditMode = EditorMode.SelectedObject;
     private GameObject actuallySelectedObject;
 
+    // TODO: EnableRender DisableRender in ComposerCamera (where grabImage is)
     void Awake() {
         EditorToggleButton.Shared = this;
     }
