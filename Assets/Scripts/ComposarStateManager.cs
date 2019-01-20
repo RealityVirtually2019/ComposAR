@@ -12,11 +12,15 @@ public class ComposarStateManager : MonoBehaviour {
 	// singleton reference
 	public static ComposarStateManager Shared;
 
+	// assets
+	public Material DrawPlaneMaterial;
+
+	// instance objects
 	private List<Project> Projects;
 	private Project CurrentProject;
 	private string CurrentSceneName;
 	private ComposarMode CurrentMode;
-	private RenderTexture CurrentScrenshot;
+	private Texture2D CurrentScrenshot;
 
 	/* Lifecycle */
 
@@ -61,26 +65,27 @@ public class ComposarStateManager : MonoBehaviour {
 		this.CurrentProject = project;
 	}
 
-	public RenderTexture GetCurrentScreenshot() {
+	public Texture2D GetCurrentScreenshot() {
 		return this.CurrentScrenshot;
 	}
 
-	public void SetCurrentScreenshot(RenderTexture screenshot) {
+	public void SetCurrentScreenshot(Texture2D screenshot) {
 		this.CurrentScrenshot = screenshot;
+		DrawPlaneMaterial.SetTexture("_MainTex", this.CurrentScrenshot);
 	}
 
 	/* Scenes */
-	protected void ChangeScene(string sceneName) {
-		if (this.CurrentSceneName == sceneName) {
+	protected void ChangeScene(string newSceneName) {
+		if (this.CurrentSceneName == newSceneName) {
 			print("Trying to change scene to self ; already exists! Skipping...");
 			return;
 		}
 
 		// Load a new scene
-		SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+		SceneManager.LoadScene(newSceneName, LoadSceneMode.Additive);
 
 		// Unload existing scene (if there is one)
-		if (this.CurrentSceneName != null && this.CurrentSceneName != "Paint") {
+		if (this.CurrentSceneName != null) {
 			print("Unloading " + this.CurrentSceneName);
 			SceneManager.UnloadSceneAsync(this.CurrentSceneName);
 			
@@ -91,7 +96,7 @@ public class ComposarStateManager : MonoBehaviour {
 		}
 		
 		// Set new scene name
-		this.CurrentSceneName = sceneName;
+		this.CurrentSceneName = newSceneName;
 	}
 	
 	public ComposarMode GetMode() {
