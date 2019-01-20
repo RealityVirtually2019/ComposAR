@@ -1,5 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/// animaid @ MIT Reality Virtually Hacakthon 2019 ///
+/// Thomas Suarez, Matt Kelsey, Ryan Reede, Sam Roquitte, Nick Grana ///
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ public class ProjectUIManager : MonoBehaviour {
     public Button newProjButton;
 
     public GameObject newProjPanel;
-    public InputField projName;
+    public InputField newProjNameInput;
     public Button cancelNewProjButton;
     public Button createAndLoadProjButton;
 
@@ -28,13 +29,12 @@ public class ProjectUIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        print ("started");
         defaultPanel.SetActive(true);
         newProjPanel.SetActive(false);
         loadProjPanel.SetActive(false);
 
         //TODO tom
-        //seqsDropdown.options = getSequences from app state
+        //projDropdown.options = get projects from global app state
 
         loadProjButton.onClick.AddListener(() => LoadProjState());
         newProjButton.onClick.AddListener(() => NewProjState());
@@ -82,14 +82,14 @@ public class ProjectUIManager : MonoBehaviour {
     }
 
     public void CreateAndLoad(){
-        string name = projName.text;
-        if (name.Length > 0){
-            print("\nMAKING sq");
+        string n = newProjNameInput.text;
+        if (n.Length > 0){
+            print("\nMAKING proj");
             print(name);
             ComposarStateManager.Shared.GetCurrentProject().MakeSequence(name);
             ComposarStateManager.Shared.GetCurrentProject().LoadSequence(name);
         } else {
-            print("sq name is empty");
+            print("proj name is empty");
             return;
         }
         OpenSequenceScene();
