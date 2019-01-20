@@ -86,8 +86,11 @@ public class ProjectUIManager : MonoBehaviour {
         if (n.Length > 0){
             print("\nMAKING proj");
             print(name);
-            ComposarStateManager.Shared.GetCurrentProject().MakeSequence(name);
-            ComposarStateManager.Shared.GetCurrentProject().LoadSequence(name);
+            Project project = new Project("test");
+            ComposarStateManager.Shared.AddProject(project);
+            ComposarStateManager.Shared.SetCurrentProject(project);
+            project.MakeSequence(name);
+            project.LoadSequence(name);
         } else {
             print("proj name is empty");
             return;

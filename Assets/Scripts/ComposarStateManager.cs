@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum ComposarMode {
+	SetupProject, SetupSequence, Layout, SketchChars, SketchModels
+}
+
 public class ComposarStateManager : MonoBehaviour {
 
 	// singleton reference
@@ -11,11 +15,13 @@ public class ComposarStateManager : MonoBehaviour {
 	private List<Project> Projects;
 	private Project CurrentProject;
 	private string CurrentSceneName;
+	private ComposarMode CurrentMode;
 
 	/* Lifecycle */
 
 	void Awake () {
 		ComposarStateManager.Shared = this;
+		this.Projects = new List<Project>();
 	}
 
 	void Start() {
@@ -23,7 +29,7 @@ public class ComposarStateManager : MonoBehaviour {
 		this.ChangeScene("Project");
 
 		// TMP test
-		StartCoroutine(DelayStartSceneIE());
+		// StartCoroutine(DelayStartSceneIE());
 	}
 
 	// TMP
@@ -56,7 +62,7 @@ public class ComposarStateManager : MonoBehaviour {
 
 	/* Scenes */
 
-	public void ChangeScene(string sceneName) {
+	protected void ChangeScene(string sceneName) {
 		// Unload existing scene (if there is one)
 		if (this.CurrentSceneName != null) {
 			SceneManager.UnloadSceneAsync(this.CurrentSceneName);
@@ -73,4 +79,28 @@ public class ComposarStateManager : MonoBehaviour {
 		this.CurrentSceneName = sceneName;
 	}
 	
+	public ComposarMode GetMode() {
+		return this.CurrentMode;
+	}
+
+	public void SetMode(ComposarMode mode) {
+		switch (mode) {
+			case ComposarMode.SetupProject:
+				this.ChangeScene("Project");
+				break;
+			case ComposarMode.SetupSequence:
+				this.ChangeScene("Sequence");
+				break;
+			case ComposarMode.Layout:
+				this.ChangeScene("Layout");
+				break;
+			case ComposarMode.SketchChars:
+				this.ChangeScene("SketchAI");
+				break;
+			case ComposarMode.SketchModels:
+				this.ChangeScene("SketchAI");
+				break;
+		}
+	}
+
 }

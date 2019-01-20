@@ -65,23 +65,20 @@ public class SequenceUIManager : MonoBehaviour {
 
     public void SketchChars()
     {
-        //todo tom switch scenes here
-
+        ComposarStateManager.Shared.SetMode(ComposarMode.SketchChars);
     }
 
     public void SketchModels()
     {
-        //todo tom switch scenes here
-
+        ComposarStateManager.Shared.SetMode(ComposarMode.SketchModels);
     }
 
     public string GenerateModelText(List<Model3D> models){
-        //TODO: tom?
-        // maybe use a better thing like a string builder here
-        string temp = "";
-        // for model in models: temp += "\n + modelName";
-        return temp;
-
+        string str = "";
+        foreach (Model3D model in models) {
+            str += model.GetName() + "\n";
+        }
+        return str;
     }
 
     public void ListModelPanel(){
