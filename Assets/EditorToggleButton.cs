@@ -41,6 +41,7 @@ public class EditorToggleButton : MonoBehaviour {
     private Vector3 selectedObjectEulerAngles = Vector3.zero;
     private EditorMode currentEditMode = EditorMode.SelectedObject;
     private GameObject actuallySelectedObject;
+    private ComposarCamera highlightedCamera;
 
     // TODO: EnableRender DisableRender in ComposerCamera (where grabImage is)
     // TODO: snap rotation scale 
@@ -124,12 +125,15 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     private void setEditorMode(EditorMode newMode) {
+        XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
+        
         if (currentEditMode == EditorMode.Camera && newMode != EditorMode.Camera) {
             // disable camera 
-            lookingAtItem.gameObject.GetComponent<ComposarCamera>().DisableRender();
+            if (highlightedCamera != null) {
+                highlightedCamera.DisableRender();
+            }
         } else if (newMode == currentEditMode) {
             // double check if looking at floor, dup/delete button are deleted 
-            XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
             if (newMode == EditorMode.LookingAtObject && lookingAtItem != null && !lookingAtItem.gameObject.transform.name.Contains("Floor")) {
                 duplicateButton.gameObject.SetActive(true);
                 deleteButton.gameObject.SetActive(true);
@@ -161,7 +165,6 @@ public class EditorToggleButton : MonoBehaviour {
             showExitButton = true;
 
             // prevent deleting and duplicating of floor 
-            XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
             if (lookingAtItem != null && !lookingAtItem.gameObject.transform.name.Contains("Floor")) {
                 showDuplicateButton = true;
                 showDeleteButton = true;
@@ -179,10 +182,9 @@ public class EditorToggleButton : MonoBehaviour {
                 ScaleDropdownValueChange();
             }
 
-            XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
-
             if (lookingAtItem != null && lookingAtItem.gameObject.transform.name.Contains("camera")) {
-                lookingAtItem.gameObject.GetComponent<ComposarCamera>().EnableRender();
+                highlightedCamera = lookingAtItem.gameObject.GetComponent<ComposarCamera>();
+                highlightedCamera.EnableRender();
                 cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GetRenderTexture();
                 showRawImage = true;
                 showTakeShotButton = true; 
@@ -194,10 +196,10 @@ public class EditorToggleButton : MonoBehaviour {
             showRawImage = true;
             showTakeShotButton = true;
 
-            XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
-
             if (lookingAtItem != null) {
-                cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GetRenderTexture();
+                highlightedCamera = lookingAtItem.gameObject.GetComponent<ComposarCamera>();
+                highlightedCamera.EnableRender();
+                cameraDisplay.texture = highlightedCamera.GetRenderTexture();
             }
         }
 
