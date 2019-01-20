@@ -100,7 +100,7 @@ public class EditorToggleButton : MonoBehaviour {
                 */
 
                 // LOCAL ONLY version - selectedItem.gameObject.transform.position = snappedPosition;
-                TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, selectedObjectEulerAngles.y, selectedObjectEulerAngles.x);
+                //TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, selectedObjectEulerAngles.y, selectedObjectEulerAngles.x);
             }
 
             selectedItem.gameObject.transform.eulerAngles = selectedObjectEulerAngles;
@@ -135,10 +135,6 @@ public class EditorToggleButton : MonoBehaviour {
             if (highlightedCamera != null) {
                 highlightedCamera.DisableRender();
             }
-<<<<<<< HEAD
-
-=======
->>>>>>> a2176f8feff0fe4c6bc3fb121abc1fe8d30bb167
         } else if (newMode == currentEditMode) {
             // double check if looking at floor, dup/delete button are deleted 
             if (newMode == EditorMode.LookingAtObject && lookingAtItem != null && !lookingAtItem.gameObject.transform.name.Contains("Floor")) {
