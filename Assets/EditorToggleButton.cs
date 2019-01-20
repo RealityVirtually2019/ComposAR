@@ -102,6 +102,8 @@ public class EditorToggleButton : MonoBehaviour {
                 // LOCAL ONLY version - selectedItem.gameObject.transform.position = snappedPosition;
                 TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, selectedObjectEulerAngles.y, selectedObjectEulerAngles.x);
             } else {
+                // TODO: rotation z does not work
+                // TODO: grab mesh and set alpha
                 selectedItem.gameObject.transform.eulerAngles = selectedObjectEulerAngles;
             }
 
@@ -227,7 +229,6 @@ public class EditorToggleButton : MonoBehaviour {
     // Menu Toggles
 
     public void OnClickSpawn() {
-        // TODO: should set rotation to 0 
         TeleportalInventory.Shared.UseCurrent();
     }
 
@@ -337,7 +338,8 @@ public class EditorToggleButton : MonoBehaviour {
         for (int i = 0; i < selectedItem.gameObject.transform.childCount; i++) {
             MeshRenderer renderer = selectedItem.gameObject.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>();
             if (renderer != null) {
-                renderer.material.color = new Color(1.0f, 1.0f, 1.0f, alpha);
+                Color oldColor = renderer.material.color;
+                renderer.material.color = new Color(oldColor.r, oldColor.g, oldColor.b, alpha);
             }
         }
         
