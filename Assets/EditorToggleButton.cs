@@ -43,9 +43,6 @@ public class EditorToggleButton : MonoBehaviour {
     private GameObject actuallySelectedObject;
     private ComposarCamera highlightedCamera;
 
-    // TODO: EnableRender DisableRender in ComposerCamera (where grabImage is)
-    // TODO: snap rotation scale 
-
     void Awake() {
         EditorToggleButton.Shared = this;
     }
@@ -69,10 +66,10 @@ public class EditorToggleButton : MonoBehaviour {
 
         // they already have an item, so they are moving an object 
         if (selectedItem != null) {
-            selectedItem.gameObject.transform.eulerAngles = selectedObjectEulerAngles;
             // Snap position to actualMovePosition
 
-            if (snapGridToggle.isOn) {
+            if (!snapGridToggle.isOn) {
+                Debug.Log("test");
                 float GridSnapSize = 0.25f; // meters
 
                 Vector3 snappedPosition = actuallySelectedObject.transform.position;
@@ -103,8 +100,10 @@ public class EditorToggleButton : MonoBehaviour {
                 */
 
                 // LOCAL ONLY version - selectedItem.gameObject.transform.position = snappedPosition;
-                TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, 0, 0);
+                //TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, selectedObjectEulerAngles.y, selectedObjectEulerAngles.x);
             }
+
+            selectedItem.gameObject.transform.eulerAngles = selectedObjectEulerAngles;
             
             newEditorMode = EditorMode.SelectedObject;
         } else {
@@ -330,6 +329,10 @@ public class EditorToggleButton : MonoBehaviour {
                 TeleportalAr.Shared.ReleaseItem(selectedItem);
             } 
 
+            if (actuallySelectedObject != null)  {
+                Destroy(actuallySelectedObject);
+            }
+            
             selectedItem.gameObject.transform.SetParent(null);
             selectedItem.gameObject.transform.SetParent(floor.transform);
         }
@@ -385,10 +388,10 @@ public class EditorToggleButton : MonoBehaviour {
 
         Vector3 angles = selectedItem.gameObject.transform.eulerAngles;
 
-        float angleSnap = 15; // degrees 
+        float angleSnap = 30; // degrees 
 
-        float snappedAngle = (float) Math.Round(rotateSlider.value / angleSnap) * angleSnap;
-        
+        float snappedAngle = snapGridToggle.isOn ? (float) Math.Round(rotateSlider.value / angleSnap) * angleSnap : rotateSlider.value;
+
         Vector3 rotationVector = new Vector3(
                 rotationDropdown.value == 0 ? snappedAngle : angles.x, 
                 rotationDropdown.value == 1 ? snappedAngle : angles.y,
