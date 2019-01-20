@@ -84,6 +84,13 @@ public class EditorToggleButton : MonoBehaviour {
 
     private void setEditorMode(EditorMode newMode) {
         if (newMode == currentEditMode) {
+            // double check if looking at floor, dup/delete button are deleted 
+            XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
+            if (lookingAtItem != null && !lookingAtItem.gameObject.transform.name.Contains("Floor")) {
+                duplicateButton.gameObject.SetActive(true);
+                deleteButton.gameObject.SetActive(true);
+            }
+            
             return; 
         }
 
