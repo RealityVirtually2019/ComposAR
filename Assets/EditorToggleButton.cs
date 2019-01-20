@@ -97,7 +97,8 @@ public class EditorToggleButton : MonoBehaviour {
             snappedPosition.z = absZ < k ? actuallySelectedObject.transform.position.z : selectedItem.gameObject.transform.position.z;
             */
 
-            selectedItem.gameObject.transform.position = snappedPosition;
+            // LOCAL ONLY version - selectedItem.gameObject.transform.position = snappedPosition;
+            TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, 0, 0);
             newEditorMode = EditorMode.SelectedObject;
         } else {
             XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
