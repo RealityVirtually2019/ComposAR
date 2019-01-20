@@ -35,7 +35,6 @@ public class LineController : MonoBehaviour
 
             if (currentState == ClickState.StartClick) {
                 if (objPlane.Raycast(mRay, out rayDistance)) {
-                    Debug.Log("Drawing new line");
                     Line newLine = Instantiate(line, Input.mousePosition, Quaternion.identity, transform).GetComponent<Line>();
                     if (currentLine != null) {
                         currentLine.active = false;
