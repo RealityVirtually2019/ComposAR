@@ -12,11 +12,14 @@ public class ComposarStateManager : MonoBehaviour {
 	private Project CurrentProject;
 	private string CurrentSceneName;
 
+	/* Lifecycle */
+
 	void Awake () {
 		ComposarStateManager.Shared = this;
 	}
 
 	void Start() {
+		// Default to Project scene
 		this.ChangeScene("Project");
 
 		// TMP test
@@ -28,6 +31,8 @@ public class ComposarStateManager : MonoBehaviour {
 		yield return new WaitForSeconds(2.0f);
 		this.ChangeScene("Layout");
 	}
+
+	/* Projects */
 
 	public void AddProject(Project project) {
 		this.Projects.Add(project);
@@ -49,10 +54,18 @@ public class ComposarStateManager : MonoBehaviour {
 		this.CurrentProject = project;
 	}
 
+	/* Scenes */
+
 	public void ChangeScene(string sceneName) {
 		// Unload existing scene (if there is one)
 		if (this.CurrentSceneName != null) {
 			SceneManager.UnloadSceneAsync(this.CurrentSceneName);
+			
+			// Handle Teleportal AR
+			if (this.CurrentSceneName == "Layout") {
+				SceneManager.UnloadSceneAsync("Teleportal");
+			}
+			
 		}
 		
 		// Load a new one
