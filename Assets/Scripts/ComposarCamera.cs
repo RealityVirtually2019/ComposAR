@@ -5,11 +5,22 @@ using UnityEngine;
 public class ComposarCamera : MonoBehaviour {
 
 	private RenderTexture rentex;
+	private Camera cameraComponent;
 
 	void Start () {
+		this.cameraComponent = this.gameObject.transform.Find("camera").GetComponent<Camera>();
 		this.rentex = new RenderTexture(256, 256, 16, RenderTextureFormat.ARGB32);
 		this.rentex.Create();
-		this.gameObject.transform.Find("camera").GetComponent<Camera>().targetTexture = this.rentex;
+		this.cameraComponent.targetTexture = this.rentex;
+		this.DisableRender();
+	}
+
+	public void EnableRender() {
+		this.cameraComponent.enabled = true;
+	}
+
+	public void DisableRender() {
+		this.cameraComponent.enabled = false;
 	}
 
 	public RenderTexture GetRenderTexture() {
