@@ -41,7 +41,7 @@ public class DrawBackgroundController : MonoBehaviour
         if (currentState == 0) {
 
             // Save front
-            Save("sketch-F-0");
+            SaveUp("sketch-F-0", true);
             // Debug.Log("Saved");
             // ICanSeeClearlyNowThatTheRainIsGone();
             // setBackgroundImage("/SavedImages/sketch-F-0.png");
@@ -155,6 +155,6 @@ public class DrawBackgroundController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        Debug.Log(currentState);
+        // Debug.Log(currentState);
     }
 }
