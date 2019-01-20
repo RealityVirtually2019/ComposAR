@@ -107,9 +107,14 @@ public class EditorToggleButton : MonoBehaviour {
             showExitButton = true;
         } else if (newMode == EditorMode.LookingAtObject) {
             showSelectButton = true;
-            showDuplicateButton = true;
-            showDeleteButton = true;
             showExitButton = true;
+
+            // prevent deleting and duplicating of floor 
+            XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
+            if (lookingAtItem != null && !lookingAtItem.gameObject.transform.name.Contains("Floor")) {
+                showDuplicateButton = true;
+                showDeleteButton = true;
+            }
         } else if (newMode == EditorMode.SelectedObject) {
             showSelectButton = true;
             showScaleSlider = true;
@@ -187,16 +192,15 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     public void OnClickDuplicate() {
-        // TODO: grab all children and new empty node with clones of each 
-        // TeleportalAr.Shared.MoveItem();
-        // waitingForDuplication = true 
-        int slot = 0;
+        waitingForDuplication = true;
+
+        int slot = 0; // TODO: grab slot by comparing inventory item to looked at name  
         int lastSlot = TeleportalInventory.Shared.CurrentItem.id;
 
         TeleportalInventory.Shared.SetItem(slot);
         TeleportalInventory.Shared.UseCurrent();
         TeleportalInventory.Shared.SetItem(lastSlot);
-        // goto onDuplication
+        // goes to OnDuplication 
     }
 
     public void OnClickTakeShot() {
@@ -211,8 +215,22 @@ public class EditorToggleButton : MonoBehaviour {
         // TODO: tom 
     }
 
-    public void OnDuplication(string id) {
-        // TODO: nick
+    public void OnDuplication(string id, XRItem newItem) {
+        XRItem lookingAt = XRItemRaycaster.Shared.ItemFocus;
+
+        if (lookingAt == null) {
+            return;
+        }
+        
+        Transform selected = lookingAt.gameObject.transform;
+        // TODO: remove duplication for floor, if floor, do not even  show duplication
+        TeleportalAr.Shared.MoveItem(id, selected.position.x, selected.position.y, selected.position.z, selected.eulerAngles.y, selected.eulerAngles.x);
+        
+        newItem.gameObject.transform.eulerAngles = new Vector3(selected.eulerAngles.x, selected.eulerAngles.y, selected.eulerAngles.z);
+        newItem.gameObject.transform.localScale = new Vector3(selected.localScale.x, selected.localScale.y, selected.localScale.y);
+        
+        selectedItem = lookingAt;
+        setIsMoving(true);
     }
 
     private void setIsMoving(bool isMoving) {

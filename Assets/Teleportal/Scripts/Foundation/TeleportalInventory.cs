@@ -65,7 +65,8 @@ public class TeleportalInventory : MonoBehaviour {
   /// <summary>
   /// The current Inventory Item being held by the Inventory.
   /// </summary>
-  private InventoryItem CurrentItem;
+  // // TP // private -> protected 
+  public InventoryItem CurrentItem;
 
   ///// LIFECYCLE /////
 

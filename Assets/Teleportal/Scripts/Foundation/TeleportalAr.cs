@@ -209,7 +209,7 @@ public class TeleportalAr : MonoBehaviour {
 
     // TP //
     if (EditorToggleButton.Shared.waitingForDuplication) {
-      EditorToggleButton.Shared.OnDuplication(id);
+      EditorToggleButton.Shared.OnDuplication(id, item);
       EditorToggleButton.Shared.waitingForDuplication = false; // reset
     }
   }
