@@ -121,7 +121,7 @@ public class DrawBackgroundController : MonoBehaviour
         Debug.Log("3");
 
         // SendToServer();
-        // ComposarStateManager.Shared.SetMode(ComposarMode.Layout);
+        ComposarStateManager.Shared.SetMode(ComposarMode.Layout);
     }
 
     private IEnumerator CoSaveUp(string filename, bool setBackground) {
