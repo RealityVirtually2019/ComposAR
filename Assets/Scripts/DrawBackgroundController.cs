@@ -67,15 +67,16 @@ public class DrawBackgroundController : MonoBehaviour
     }
 
     IEnumerator helpiboi() {
-        if (!System.IO.File.Exists("/SavedImages/sketch-F-0.png") || !System.IO.File.Exists("/SavedImages/sketch-S-0.png")) {
-            Debug.Log("Missing one or more sketches");
+        if (!System.IO.File.Exists(Application.dataPath + "/SavedImages/SavedImage.png")) {
+        //if (!System.IO.File.Exists("/SavedImages/sketch-F-0.png") || !System.IO.File.Exists("/SavedImages/sketch-S-0.png")) {
+            Debug.Log("Missing sketch");
             yield return null;
         }
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        formData.Add( new MultipartFormFileSection("file[0]", "Assets/SavedImages/sketch-F-0.png") );
-        formData.Add( new MultipartFormFileSection("file[1]", "Assets/SavedImages/sketch-S-0.png") );
+        formData.Add( new MultipartFormFileSection("file[0]", Application.dataPath + "/SavedImages/SavedImage.png") );
 
-        UnityWebRequest www = UnityWebRequest.Post("http://192.168.1.49:5000/submit", formData);
+        Debug.Log("Setting...");
+        UnityWebRequest www = UnityWebRequest.Post("http://192.168.43.7:5000/submit", formData);
         yield return www.SendWebRequest();
  
         if(www.isNetworkError || www.isHttpError) {
@@ -119,7 +120,8 @@ public class DrawBackgroundController : MonoBehaviour
         File.WriteAllBytes(Application.dataPath + "/SavedImages/" + filename + ".png", data);
         Debug.Log("3");
 
-        ComposarStateManager.Shared.SetMode(ComposarMode.Layout);
+        // SendToServer();
+        // ComposarStateManager.Shared.SetMode(ComposarMode.Layout);
     }
 
     private IEnumerator CoSaveUp(string filename, bool setBackground) {
