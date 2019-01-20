@@ -83,9 +83,9 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     private void setEditorMode(EditorMode newMode) {
-        if (newMode == currentEditMode) {
-            return; 
-        }
+        // if (newMode == currentEditMode) {
+        //     return; 
+        // }
 
         bool showExitButton = false;
 
@@ -194,11 +194,14 @@ public class EditorToggleButton : MonoBehaviour {
     public void OnClickDuplicate() {
         waitingForDuplication = true;
 
-        int slot = 0; // TODO: grab slot by comparing inventory item to looked at name
-        for (TeleportalInventory.Shared.) {
-
-        }
         int lastSlot = TeleportalInventory.Shared.CurrentItem.id;
+        int slot = 0; // TODO: grab slot by comparing inventory item to looked at name
+        for (int i = 0; i < TeleportalInventory.Shared.InventoryArray.Length; i++) {
+            if (XRItemRaycaster.Shared.ItemFocus.gameObject.name.Contains(TeleportalInventory.Shared.InventoryArray[i].type)) {
+                slot = i;
+                break;
+            }
+        }
 
         TeleportalInventory.Shared.SetItem(slot);
         TeleportalInventory.Shared.UseCurrent();
@@ -339,8 +342,6 @@ public class EditorToggleButton : MonoBehaviour {
         } else {
             newValue = transform.eulerAngles.z;
         }
-
-        Debug.Log(newValue);
 
         ignoreThisChange = true;
         rotateSlider.value = newValue;
