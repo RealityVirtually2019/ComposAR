@@ -1,4 +1,4 @@
-﻿/// ComposAR @ MIT Reality Virtually Hacakthon 2019 ///
+﻿/// animaid @ MIT Reality Virtually Hacakthon 2019 ///
 /// Thomas Suarez, Matt Kelsey, Ryan Reede, Sam Roquitte, Nick Grana ///
 
 using System.Collections;
