@@ -14,18 +14,19 @@ public class ParentToImmersiveCamera : MonoBehaviour {
 	// Initializer function
 	void Start() {
 		// Move to be a child under the immersive camera
-		WaitThenSetParent(TeleportalAr.Shared.CurrentCamera.transform);
+		WaitThenSetParent();
 	}
 
-	void WaitThenSetParent(Transform newParent) {
-		StartCoroutine(WaitThenSetParentI(newParent));
+	void WaitThenSetParent() {
+		StartCoroutine(WaitThenSetParentI());
 	}
 
-	IEnumerator WaitThenSetParentI(Transform newParent) {
+	IEnumerator WaitThenSetParentI() {
 		// Wait 1 second
 		yield return new WaitForSeconds(1);
 
 		// Move to be a child under the new parent
+		Transform newParent = TeleportalAr.Shared.CurrentCamera.transform;
 		transform.parent.SetParent(newParent, false);
 
 		// Finish

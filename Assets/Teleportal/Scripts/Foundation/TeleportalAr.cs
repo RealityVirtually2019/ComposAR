@@ -206,6 +206,12 @@ public class TeleportalAr : MonoBehaviour {
 
     // Add to dictionaries
     Items[id] = item;
+
+    // TP //
+    if (EditorToggleButton.Shared.waitingForDuplication) {
+      EditorToggleButton.Shared.OnDuplication(id, item);
+      EditorToggleButton.Shared.waitingForDuplication = false; // reset
+    }
   }
 
   /// <summary>

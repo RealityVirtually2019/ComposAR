@@ -60,12 +60,14 @@ public class TeleportalInventory : MonoBehaviour {
   /// This array is re-generated every time the Player's
   /// Inventory Bar is updated.
   /// </summary>  
-  private InventoryItem[] InventoryArray;
+  // // TP // private -> public
+  public InventoryItem[] InventoryArray;
 
   /// <summary>
   /// The current Inventory Item being held by the Inventory.
   /// </summary>
-  private InventoryItem CurrentItem;
+  // // TP // private -> protected 
+  public InventoryItem CurrentItem;
 
   ///// LIFECYCLE /////
 

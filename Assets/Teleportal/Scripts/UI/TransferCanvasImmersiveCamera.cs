@@ -11,11 +11,10 @@ using UnityEngine;
 /// </summary>
 public class TransferCanvasImmersiveCamera : MonoBehaviour {
 
-	private Canvas UICanvas;
-
 	// Initializer function
 	void Start() {
 		// Transfer render camera to the immersive camera
+		Canvas UICanvas = this.transform.parent.gameObject.GetComponent<Canvas>();
 		UICanvas.worldCamera = TeleportalAr.Shared.CurrentCamera;
 	}
 
