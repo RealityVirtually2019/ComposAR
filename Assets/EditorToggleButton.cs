@@ -44,7 +44,7 @@ public class EditorToggleButton : MonoBehaviour {
 
     // TODO: EnableRender DisableRender in ComposerCamera (where grabImage is)
     // TODO: snap rotation scale 
-    
+
     void Awake() {
         EditorToggleButton.Shared = this;
     }
@@ -179,6 +179,7 @@ public class EditorToggleButton : MonoBehaviour {
 
             if (lookingAtItem != null && lookingAtItem.gameObject.transform.name.Contains("camera")) {
                 cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GetRenderTexture();
+                // lookingAtItem.gameObject.GetComponent<ComposarCamera>().EnableRender();
                 showRawImage = true;
                 showTakeShotButton = true;
             }
