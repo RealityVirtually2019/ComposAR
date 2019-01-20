@@ -195,7 +195,7 @@ public class EditorToggleButton : MonoBehaviour {
         waitingForDuplication = true;
 
         int lastSlot = TeleportalInventory.Shared.CurrentItem.id;
-        int slot = 0; // TODO: grab slot by comparing inventory item to looked at name
+        int slot = 0;
         for (int i = 0; i < TeleportalInventory.Shared.InventoryArray.Length; i++) {
             if (XRItemRaycaster.Shared.ItemFocus.gameObject.name.Contains(TeleportalInventory.Shared.InventoryArray[i].type)) {
                 slot = i;
