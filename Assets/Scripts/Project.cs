@@ -14,6 +14,11 @@ public class Project {
     public Project(string n)
     {
         this.projectName = n;
+        this.sequenceMap = new Dictionary<string, Sequence>();
+    }
+
+    public string GetName() {
+        return this.projectName;
     }
 
     public void MakeSequence(string name){
@@ -23,7 +28,8 @@ public class Project {
     }
 
     public void LoadSequence(string name) {
-        ComposarStateManager.Shared.ChangeScene("Layout");
+        // load sequence setup
+        ComposarStateManager.Shared.SetMode(ComposarMode.SetupSequence);
     }
      
     public List<Sequence> GetSequences(){
