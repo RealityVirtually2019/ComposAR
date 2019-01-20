@@ -44,6 +44,7 @@ public class EditorToggleButton : MonoBehaviour {
 
     // TODO: EnableRender DisableRender in ComposerCamera (where grabImage is)
     // TODO: snap rotation scale 
+    // TODO: snap grid is toggle 
 
     void Awake() {
         EditorToggleButton.Shared = this;
@@ -59,6 +60,8 @@ public class EditorToggleButton : MonoBehaviour {
         rotationDropdown.onValueChanged.AddListener(delegate { DropdownValueChange(); });
         scaleDropdown.onValueChanged.AddListener(delegate { ScaleDropdownValueChange(); });
 
+
+        
         setEditorMode(EditorMode.None);
 	}
 
@@ -70,37 +73,41 @@ public class EditorToggleButton : MonoBehaviour {
         if (selectedItem != null) {
             selectedItem.gameObject.transform.eulerAngles = selectedObjectEulerAngles;
             // Snap position to actualMovePosition
-            float GridSnapSize = 0.25f; // meters
 
-            Vector3 snappedPosition = actuallySelectedObject.transform.position;
-            snappedPosition.x = (float) Math.Round(snappedPosition.x / GridSnapSize) * GridSnapSize;
-            snappedPosition.y = (float) Math.Round(snappedPosition.y / GridSnapSize) * GridSnapSize;
-            snappedPosition.z = (float) Math.Round(snappedPosition.z / GridSnapSize) * GridSnapSize;
+            if (snapGridToggle.isOn) {
+                float GridSnapSize = 0.25f; // meters
+
+                Vector3 snappedPosition = actuallySelectedObject.transform.position;
+                snappedPosition.x = (float) Math.Round(snappedPosition.x / GridSnapSize) * GridSnapSize;
+                snappedPosition.y = (float) Math.Round(snappedPosition.y / GridSnapSize) * GridSnapSize;
+                snappedPosition.z = (float) Math.Round(snappedPosition.z / GridSnapSize) * GridSnapSize;
             
-            /* Experiments:
-            float div = 5.0f;
-            double k = 0.1;
-            Debug.Log("actual transfor x " + Math.Abs(actuallySelectedObject.transform.position.x) % 2);
-            Debug.Log("actual transfor y " + Math.Abs(actuallySelectedObject.transform.position.y) % 2);
-            Debug.Log("actual transfor z " + Math.Abs(actuallySelectedObject.transform.position.z) % 2);
+                /* Experiments:
+                float div = 5.0f;
+                double k = 0.1;
+                Debug.Log("actual transfor x " + Math.Abs(actuallySelectedObject.transform.position.x) % 2);
+                Debug.Log("actual transfor y " + Math.Abs(actuallySelectedObject.transform.position.y) % 2);
+                Debug.Log("actual transfor z " + Math.Abs(actuallySelectedObject.transform.position.z) % 2);
 
-            Vector3 snappedPosition = new Vector3(
-                Math.Abs(actuallySelectedObject.transform.position.x) % 2 <= k ? actuallySelectedObject.transform.position.x : selectedItem.gameObject.transform.position.x, 
-                Math.Abs(actuallySelectedObject.transform.position.y) % 2 <= k ? actuallySelectedObject.transform.position.y : selectedItem.gameObject.transform.position.y, 
-                Math.Abs(actuallySelectedObject.transform.position.z) % 2 <= k ? actuallySelectedObject.transform.position.z : selectedItem.gameObject.transform.position.z); 
+                Vector3 snappedPosition = new Vector3(
+                    Math.Abs(actuallySelectedObject.transform.position.x) % 2 <= k ? actuallySelectedObject.transform.position.x : selectedItem.gameObject.transform.position.x, 
+                    Math.Abs(actuallySelectedObject.transform.position.y) % 2 <= k ? actuallySelectedObject.transform.position.y : selectedItem.gameObject.transform.position.y, 
+                    Math.Abs(actuallySelectedObject.transform.position.z) % 2 <= k ? actuallySelectedObject.transform.position.z : selectedItem.gameObject.transform.position.z); 
 
-            float absX = Math.Abs(actuallySelectedObject.transform.position.x - actuallySelectedObject.transform.position.x) % div;
-            float absY = Math.Abs(actuallySelectedObject.transform.position.y - actuallySelectedObject.transform.position.y) % div;
-            float absZ = Math.Abs(actuallySelectedObject.transform.position.z - actuallySelectedObject.transform.position.z) % div;
-            print(absX);
-            print(absY);
-            print(absZ);
-            snappedPosition.y = absY < k ? actuallySelectedObject.transform.position.y : selectedItem.gameObject.transform.position.y;
-            snappedPosition.z = absZ < k ? actuallySelectedObject.transform.position.z : selectedItem.gameObject.transform.position.z;
-            */
+                float absX = Math.Abs(actuallySelectedObject.transform.position.x - actuallySelectedObject.transform.position.x) % div;
+                float absY = Math.Abs(actuallySelectedObject.transform.position.y - actuallySelectedObject.transform.position.y) % div;
+                float absZ = Math.Abs(actuallySelectedObject.transform.position.z - actuallySelectedObject.transform.position.z) % div;
+                print(absX);
+                print(absY);
+                print(absZ);
+                snappedPosition.y = absY < k ? actuallySelectedObject.transform.position.y : selectedItem.gameObject.transform.position.y;
+                snappedPosition.z = absZ < k ? actuallySelectedObject.transform.position.z : selectedItem.gameObject.transform.position.z;
+                */
 
-            // LOCAL ONLY version - selectedItem.gameObject.transform.position = snappedPosition;
-            TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, 0, 0);
+                // LOCAL ONLY version - selectedItem.gameObject.transform.position = snappedPosition;
+                TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, 0, 0);
+            }
+            
             newEditorMode = EditorMode.SelectedObject;
         } else {
             XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
@@ -126,7 +133,7 @@ public class EditorToggleButton : MonoBehaviour {
     private void setEditorMode(EditorMode newMode) {
         if (currentEditMode == EditorMode.Camera && newMode != EditorMode.Camera) {
             // disable camera 
-            lookingAtItem.gameObject.GetComponent<ComposarCamera>().DisableRender();
+            // lookingAtItem.gameObject.GetComponent<ComposarCamera>().DisableRender();
         } else if (newMode == currentEditMode) {
             // double check if looking at floor, dup/delete button are deleted 
             XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
