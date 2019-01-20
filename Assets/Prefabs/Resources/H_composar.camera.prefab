@@ -14,7 +14,8 @@ Prefab:
 --- !u!1 &1691218152957064
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1552456789752796, guid: 0531832b066cf46c699b96d951e5d0fc,
+    type: 2}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
@@ -29,7 +30,8 @@ GameObject:
 --- !u!4 &4189884068239988
 Transform:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 4222639732439082, guid: 0531832b066cf46c699b96d951e5d0fc,
+    type: 2}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1691218152957064}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}

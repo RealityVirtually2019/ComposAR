@@ -1,21 +1,35 @@
-﻿using System.Collections;
+﻿/// animaid @ MIT Reality Virtually Hacakthon 2019 ///
+/// Thomas Suarez, Matt Kelsey, Ryan Reede, Sam Roquitte, Nick Grana ///
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+public enum ComposarMode {
+	SetupProject, SetupSequence, Layout, SketchChars, SketchModels
+}
 
 public class ComposarStateManager : MonoBehaviour {
 
 	// singleton reference
 	public static ComposarStateManager Shared;
 
+	// assets
+	public Material DrawPlaneMaterial;
+
+	// instance objects
 	private List<Project> Projects;
 	private Project CurrentProject;
 	private string CurrentSceneName;
+	private ComposarMode CurrentMode;
+	private Texture2D CurrentScrenshot;
 
 	/* Lifecycle */
 
 	void Awake () {
 		ComposarStateManager.Shared = this;
+		this.Projects = new List<Project>();
 	}
 
 	void Start() {
@@ -23,7 +37,7 @@ public class ComposarStateManager : MonoBehaviour {
 		this.ChangeScene("Project");
 
 		// TMP test
-		StartCoroutine(DelayStartSceneIE());
+		// StartCoroutine(DelayStartSceneIE());
 	}
 
 	// TMP
@@ -54,23 +68,62 @@ public class ComposarStateManager : MonoBehaviour {
 		this.CurrentProject = project;
 	}
 
-	/* Scenes */
+	public Texture2D GetCurrentScreenshot() {
+		return this.CurrentScrenshot;
+	}
 
-	public void ChangeScene(string sceneName) {
+	public void SetCurrentScreenshot(Texture2D screenshot) {
+		this.CurrentScrenshot = screenshot;
+		DrawPlaneMaterial.SetTexture("_MainTex", this.CurrentScrenshot);
+	}
+
+	/* Scenes */
+	protected void ChangeScene(string newSceneName) {
+		if (this.CurrentSceneName == newSceneName) {
+			print("Trying to change scene to self ; already exists! Skipping...");
+			return;
+		}
+
+		// Load a new scene
+		SceneManager.LoadScene(newSceneName, LoadSceneMode.Additive);
+
 		// Unload existing scene (if there is one)
 		if (this.CurrentSceneName != null) {
+			print("Unloading " + this.CurrentSceneName);
 			SceneManager.UnloadSceneAsync(this.CurrentSceneName);
 			
 			// Handle Teleportal AR
 			if (this.CurrentSceneName == "Layout") {
 				SceneManager.UnloadSceneAsync("Teleportal");
 			}
-			
 		}
 		
-		// Load a new one
-		SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
-		this.CurrentSceneName = sceneName;
+		// Set new scene name
+		this.CurrentSceneName = newSceneName;
 	}
 	
+	public ComposarMode GetMode() {
+		return this.CurrentMode;
+	}
+
+	public void SetMode(ComposarMode mode) {
+		switch (mode) {
+			case ComposarMode.SetupProject:
+				this.ChangeScene("Project");
+				break;
+			case ComposarMode.SetupSequence:
+				this.ChangeScene("Sequence");
+				break;
+			case ComposarMode.Layout:
+				this.ChangeScene("Layout");
+				break;
+			case ComposarMode.SketchChars:
+				this.ChangeScene("Paint");
+				break;
+			case ComposarMode.SketchModels:
+				this.ChangeScene("Paint");
+				break;
+		}
+	}
+
 }

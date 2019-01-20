@@ -42,8 +42,8 @@ public class SequenceUIManager : MonoBehaviour {
         addSeqPanel.SetActive(false);
         modelsPanel.SetActive(false);
 
-        // TODO TOM get curr proj name from state and set
-        //currProjText.text = ????
+        // Get curr proj name from state and set
+        currProjText.text = ComposarStateManager.Shared.GetCurrentProject().GetName();
 
         backButton.onClick.AddListener(() => Back());
         layoutSelectedSeqButton.onClick.AddListener(() => Layout());
@@ -65,23 +65,20 @@ public class SequenceUIManager : MonoBehaviour {
 
     public void SketchChars()
     {
-        //todo tom switch scenes here
-
+        ComposarStateManager.Shared.SetMode(ComposarMode.SketchChars);
     }
 
     public void SketchModels()
     {
-        //todo tom switch scenes here
-
+        ComposarStateManager.Shared.SetMode(ComposarMode.SketchModels);
     }
 
     public string GenerateModelText(List<Model3D> models){
-        //TODO: tom?
-        // maybe use a better thing like a string builder here
-        string temp = "";
-        // for model in models: temp += "\n + modelName";
-        return temp;
-
+        string str = "";
+        foreach (Model3D model in models) {
+            str += model.GetName() + "\n";
+        }
+        return str;
     }
 
     public void ListModelPanel(){
@@ -99,15 +96,16 @@ public class SequenceUIManager : MonoBehaviour {
     }
 
     public void Back() {
-        //TODO tom, load back scene. In this case, 'Project'
+        // Head back to Project
+        ComposarStateManager.Shared.SetMode(ComposarMode.SetupProject);
     }
 
     public void Layout(){
         //TODO tom, set state for selected Sequence
         string selectedSeq = sequenceDropdown.options[sequenceDropdown.value].text;
-        // TODO tom load scene based on ^ 
-        // also set the state on
 
+        // load layout editor
+        ComposarStateManager.Shared.SetMode(ComposarMode.Layout);
     }
 
     public void NewSequencePanel() {

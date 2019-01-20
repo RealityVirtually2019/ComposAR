@@ -20,6 +20,7 @@ public class Sequence {
 		this.name = name;
 		this.timestamp = timestamp;
 		this.shots = new List<Shot>();
+		this.models = new List<Model3D>();
 	}
 
 	public void ChangeName(string name) {
