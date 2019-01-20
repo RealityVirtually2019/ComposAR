@@ -41,7 +41,7 @@ public class ComposarCamera : MonoBehaviour {
 		
 		// Forward to Paint scene
 		ComposarStateManager.Shared.SetCurrentScreenshot(tex);
-		ComposarStateManager.Shared.SetMode(ComposarMode.SketchModels);
+		ComposarStateManager.Shared.SetMode(ComposarMode.SketchChars);
 
 		// TODO save to iOS/Android camera rolls
 	}

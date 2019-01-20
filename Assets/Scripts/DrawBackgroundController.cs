@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿/// animaid @ MIT Reality Virtually Hacakthon 2019 ///
+/// Thomas Suarez, Matt Kelsey, Ryan Reede, Sam Roquitte, Nick Grana ///
+
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -20,12 +23,21 @@ public class DrawBackgroundController : MonoBehaviour
 
     // public GameObject BackgroundPlane;
     public Material frontPlane;
+    public Material drawLineMat;
     public RenderTexture SaveTexture;
 
     void Start() {
         Debug.Log("State starts as: " + currentState);
         lineController = LineController.Shared; 
         setBackgroundImage("Assets/test.jpg");
+
+        if (ComposarStateManager.Shared.GetMode() == ComposarMode.SketchChars) {
+            drawLineMat.SetColor("_Albedo", Color.black);
+            drawLineMat.SetColor("_Emission", Color.black);
+        } else if (ComposarStateManager.Shared.GetMode() == ComposarMode.SketchModels) {
+            drawLineMat.SetColor("_Albedo", Color.white);
+            drawLineMat.SetColor("_Emission", Color.white);
+        }
     }
 
     //getters for state

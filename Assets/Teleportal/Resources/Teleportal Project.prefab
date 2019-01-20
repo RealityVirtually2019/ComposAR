@@ -177,6 +177,7 @@ MonoBehaviour:
   DefaultInventoryItems:
   - composar.cube
   - composar.camera
+  - composar.lamp
 --- !u!114 &114614181178316404
 MonoBehaviour:
   m_ObjectHideFlags: 1
