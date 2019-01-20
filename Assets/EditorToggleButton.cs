@@ -123,7 +123,10 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     private void setEditorMode(EditorMode newMode) {
-        if (newMode == currentEditMode) {
+        if (currentEditMode == EditorMode.Camera && newMode != EditorMode.Camera) {
+            // disable camera 
+            lookingAtItem.gameObject.GetComponent<ComposarCamera>().DisableRender();
+        } else if (newMode == currentEditMode) {
             // double check if looking at floor, dup/delete button are deleted 
             XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
             if (newMode == EditorMode.LookingAtObject && lookingAtItem != null && !lookingAtItem.gameObject.transform.name.Contains("Floor")) {
@@ -178,10 +181,10 @@ public class EditorToggleButton : MonoBehaviour {
             XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
 
             if (lookingAtItem != null && lookingAtItem.gameObject.transform.name.Contains("camera")) {
+                lookingAtItem.gameObject.GetComponent<ComposarCamera>().EnableRender();
                 cameraDisplay.texture = lookingAtItem.gameObject.GetComponent<ComposarCamera>().GetRenderTexture();
-                // lookingAtItem.gameObject.GetComponent<ComposarCamera>().EnableRender();
                 showRawImage = true;
-                showTakeShotButton = true;
+                showTakeShotButton = true; 
             }
         } else if (newMode == EditorMode.Camera) {
             showSelectButton = true;
