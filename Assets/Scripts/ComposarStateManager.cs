@@ -16,6 +16,7 @@ public class ComposarStateManager : MonoBehaviour {
 	private Project CurrentProject;
 	private string CurrentSceneName;
 	private ComposarMode CurrentMode;
+	private RenderTexture CurrentScrenshot;
 
 	/* Lifecycle */
 
@@ -60,8 +61,15 @@ public class ComposarStateManager : MonoBehaviour {
 		this.CurrentProject = project;
 	}
 
-	/* Scenes */
+	public RenderTexture GetCurrentScreenshot() {
+		return this.CurrentScrenshot;
+	}
 
+	public void SetCurrentScreenshot(RenderTexture screenshot) {
+		this.CurrentScrenshot = screenshot;
+	}
+
+	/* Scenes */
 	protected void ChangeScene(string sceneName) {
 		if (this.CurrentSceneName == sceneName) {
 			print("Trying to change scene to self ; already exists! Skipping...");
@@ -72,7 +80,7 @@ public class ComposarStateManager : MonoBehaviour {
 		SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
 
 		// Unload existing scene (if there is one)
-		if (this.CurrentSceneName != null) {
+		if (this.CurrentSceneName != null && this.CurrentSceneName != "Paint") {
 			print("Unloading " + this.CurrentSceneName);
 			SceneManager.UnloadSceneAsync(this.CurrentSceneName);
 			
@@ -102,10 +110,10 @@ public class ComposarStateManager : MonoBehaviour {
 				this.ChangeScene("Layout");
 				break;
 			case ComposarMode.SketchChars:
-				this.ChangeScene("SketchAI");
+				this.ChangeScene("Paint");
 				break;
 			case ComposarMode.SketchModels:
-				this.ChangeScene("SketchAI");
+				this.ChangeScene("Paint");
 				break;
 		}
 	}

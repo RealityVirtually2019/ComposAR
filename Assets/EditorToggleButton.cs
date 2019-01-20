@@ -135,7 +135,10 @@ public class EditorToggleButton : MonoBehaviour {
             if (highlightedCamera != null) {
                 highlightedCamera.DisableRender();
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a2176f8feff0fe4c6bc3fb121abc1fe8d30bb167
         } else if (newMode == currentEditMode) {
             // double check if looking at floor, dup/delete button are deleted 
             if (newMode == EditorMode.LookingAtObject && lookingAtItem != null && !lookingAtItem.gameObject.transform.name.Contains("Floor")) {
