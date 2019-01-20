@@ -225,7 +225,7 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     public void OnClickExit() {
-        // TODO: tom 
+        ComposarStateManager.Shared.ChangeScene("Project");
     }
 
     public void OnDuplication(string id, XRItem newItem) {
