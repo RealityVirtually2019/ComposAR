@@ -2,6 +2,8 @@
   
 **AnimAid (formerly ComposAR) is the ultimate tool for rapid protyping of story concepts.**
 
+https://devpost.com/software/animaid
+
 # Features
 
   - Deep learning sytem for rapid prototyping of 3D geometry from 2D sketches 
