@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Teleportal;
 
 enum EditorMode { Camera, LookingAtObject, SelectedObject, None }
 
@@ -100,7 +101,7 @@ public class EditorToggleButton : MonoBehaviour {
                 */
 
                 // LOCAL ONLY version - selectedItem.gameObject.transform.position = snappedPosition;
-                TeleportalAr.Shared.MoveItem(selectedItem.Id, snappedPosition.x, snappedPosition.y, snappedPosition.z, selectedObjectEulerAngles.y, selectedObjectEulerAngles.x);
+                Teleportal.Ar.Shared.MoveItem(selectedItem.GetId(), snappedPosition.x, snappedPosition.y, snappedPosition.z, selectedObjectEulerAngles.y, selectedObjectEulerAngles.x);
             } else {
                 // TODO: rotation z does not work
                 // TODO: grab mesh and set alpha
@@ -110,7 +111,7 @@ public class EditorToggleButton : MonoBehaviour {
             
             newEditorMode = EditorMode.SelectedObject;
         } else {
-            XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
+            XRItem lookingAtItem = XRItemRaycaster.Shared.GetFocusedItem();
 
             // if they are looking at an item and not holding one, determine if it is camera/object  
             if (lookingAtItem != null) {
@@ -131,7 +132,7 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     private void setEditorMode(EditorMode newMode) {
-        XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
+        XRItem lookingAtItem = XRItemRaycaster.Shared.GetFocusedItem();
         
         if (currentEditMode == EditorMode.Camera && newMode != EditorMode.Camera) {
             // disable camera 
@@ -229,7 +230,7 @@ public class EditorToggleButton : MonoBehaviour {
     // Menu Toggles
 
     public void OnClickSpawn() {
-        TeleportalInventory.Shared.UseCurrent();
+        Teleportal.Inventory.Shared.UseCurrent();
     }
 
     public void OnClickMove() {
@@ -238,40 +239,42 @@ public class EditorToggleButton : MonoBehaviour {
             setIsMoving(false);
         } else {
             // pickup object
-            selectedItem = XRItemRaycaster.Shared.ItemFocus;
+            selectedItem = XRItemRaycaster.Shared.GetFocusedItem();
             selectedObjectEulerAngles = selectedItem.transform.eulerAngles;
             setIsMoving(true);
         }
     }
 
     public void OnClickDelete() {
-        XRItem item = XRItemRaycaster.Shared.ItemFocus;
+        XRItem item = XRItemRaycaster.Shared.GetFocusedItem();
 
         if (item != null) {
-            TeleportalAr.Shared.DeleteItem(item.Id);
+            Teleportal.Ar.Shared.DeleteItem(item.GetId());
         }
     }
 
     public void OnClickDuplicate() {
+        /* TODO fix TP refs
         waitingForDuplication = true;
 
-        int lastSlot = TeleportalInventory.Shared.CurrentItem.id;
+        int lastSlot = Teleportal.Inventory.Shared.CurrentItem.id;
         int slot = 0;
-        for (int i = 0; i < TeleportalInventory.Shared.InventoryArray.Length; i++) {
-            if (XRItemRaycaster.Shared.ItemFocus.gameObject.name.Contains(TeleportalInventory.Shared.InventoryArray[i].type)) {
+        for (int i = 0; i < Teleportal.Inventory.Shared.InventoryArray.Length; i++) {
+            if (XRItemRaycaster.Shared.GetFocusedItem().gameObject.name.Contains(Teleportal.Inventory.Shared.InventoryArray[i].type)) {
                 slot = i;
                 break;
             }
         }
 
-        TeleportalInventory.Shared.SetItem(slot);
-        TeleportalInventory.Shared.UseCurrent();
-        TeleportalInventory.Shared.SetItem(lastSlot);
-        // goes to OnDuplication 
+        Teleportal.Inventory.Shared.SetItem(slot);
+        Teleportal.Inventory.Shared.UseCurrent();
+        Teleportal.Inventory.Shared.SetItem(lastSlot);
+        // goes to OnDuplication
+        */
     }
 
     public void OnClickTakeShot() {
-        XRItem lookingAtItem = XRItemRaycaster.Shared.ItemFocus;
+        XRItem lookingAtItem = XRItemRaycaster.Shared.GetFocusedItem();
 
         if (lookingAtItem != null) {
             lookingAtItem.gameObject.GetComponent<ComposarCamera>().SaveImage();
@@ -283,14 +286,14 @@ public class EditorToggleButton : MonoBehaviour {
     }
 
     public void OnDuplication(string id, XRItem newItem) {
-        XRItem lookingAt = XRItemRaycaster.Shared.ItemFocus;
+        XRItem lookingAt = XRItemRaycaster.Shared.GetFocusedItem();
 
         if (lookingAt == null) {
             return;
         }
         
         Transform selected = lookingAt.gameObject.transform;
-        TeleportalAr.Shared.MoveItem(id, selected.position.x, selected.position.y, selected.position.z, selected.eulerAngles.y, selected.eulerAngles.x);
+        Teleportal.Ar.Shared.MoveItem(id, selected.position.x, selected.position.y, selected.position.z, selected.eulerAngles.y, selected.eulerAngles.x);
         
         newItem.gameObject.transform.eulerAngles = new Vector3(selected.eulerAngles.x, selected.eulerAngles.y, selected.eulerAngles.z);
         newItem.gameObject.transform.localScale = new Vector3(selected.localScale.x, selected.localScale.y, selected.localScale.y);
@@ -317,9 +320,9 @@ public class EditorToggleButton : MonoBehaviour {
                 if (snapGridToggle.isOn) {
                     actuallySelectedObject = new GameObject();
                     actuallySelectedObject.transform.position = selectedItem.gameObject.transform.position;
-                    actuallySelectedObject.transform.SetParent(TeleportalAr.Shared.CurrentCamera.transform);
+                    actuallySelectedObject.transform.SetParent(Teleportal.Ar.Shared.CurrentCamera.transform);
                 } else {
-                    TeleportalAr.Shared.HoldItem(selectedItem);
+                    selectedItem.ParentToUser(true);
                 }
             }
             
@@ -328,7 +331,7 @@ public class EditorToggleButton : MonoBehaviour {
             selectButtonText.text = "Select";
 
              if (!snapGridToggle.isOn) {
-                TeleportalAr.Shared.ReleaseItem(selectedItem);
+                selectedItem.ParentToUser(false);
             } 
             
             selectedItem.gameObject.transform.SetParent(null);

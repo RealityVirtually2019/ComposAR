@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Name: ARKitSettings
   m_EditorClassIdentifier: 
   m_ARKitUsesFacetracking: 0
-  AppRequiresARKit: 1
+  AppRequiresARKit: 0

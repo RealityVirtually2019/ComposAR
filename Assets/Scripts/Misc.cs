@@ -4,15 +4,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Teleportal;
 
 public class Misc : MonoBehaviour {
 
 	void Start() {
-		TeleportalProject.Shared.OnTeleportalLoaded += OnTeleportalLoaded;
+		Teleportal.Project.Shared.OnTeleportalLoaded += OnTeleportalLoaded;
 	}
 
 	void OnTeleportalLoaded() {
-		// TeleportalInventory.Shared.BarUI.active = false;
+		// Teleportal.Inventory.Shared.BarUI.active = false;
 	}
 	
 	// Update is called once per frame

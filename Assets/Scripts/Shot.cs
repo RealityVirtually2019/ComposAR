@@ -4,6 +4,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Teleportal;
 
 public class Shot {
 
@@ -51,7 +52,7 @@ public class Shot {
 	}
 
 	public string GetId() {
-		return this.XRI.Id;
+		return this.XRI.GetId();
 	}
 
 	public Camera GetCamera() {

@@ -8,18 +8,18 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1100393608983210}
   m_IsPrefabParent: 1
 --- !u!1 &1100393608983210
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4215377948433676}
-  - component: {fileID: 114157387699990798}
+  - component: {fileID: 114752760505464470}
   m_Layer: 0
   m_Name: Desktop Handler
   m_TagString: Untagged
@@ -30,7 +30,7 @@ GameObject:
 --- !u!4 &4215377948433676
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1100393608983210}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -40,15 +40,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114157387699990798
+--- !u!114 &114752760505464470
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1100393608983210}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdd334b8007e04520977f26c60722dbd, type: 3}
+  m_Script: {fileID: 1938302109, guid: 2935917a6594c42ae959ebec929f2e49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TargetPlatform: 1

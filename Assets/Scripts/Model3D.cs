@@ -4,6 +4,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Teleportal;
 
 public enum Model3DType {
     Character, Environment, DeepLearning
@@ -44,7 +45,7 @@ public class Model3D {
     }
 
     public string GetId() {
-        return this.XRI.Id;
+        return this.XRI.GetId();
     }
 
     public Model3DType GetType() {

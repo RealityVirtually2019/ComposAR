@@ -8,15 +8,15 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1756928655405884}
   m_IsPrefabParent: 1
 --- !u!1 &1756928655405884
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 224857453554369028}
   - component: {fileID: 222526135929400940}
@@ -32,7 +32,7 @@ GameObject:
 --- !u!114 &114100825989804096
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1756928655405884}
   m_Enabled: 1
@@ -58,12 +58,12 @@ MonoBehaviour:
 --- !u!114 &114716955638071148
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1756928655405884}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dad95124bc8f4b2e92e12c395bef83b, type: 3}
+  m_Script: {fileID: -1420666938, guid: 2935917a6594c42ae959ebec929f2e49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Ready: {fileID: 2800000, guid: 4419edfcb3f054e9d81c8fac92ee6021, type: 3}
@@ -76,13 +76,14 @@ MonoBehaviour:
 --- !u!222 &222526135929400940
 CanvasRenderer:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1756928655405884}
+  m_CullTransparentMesh: 0
 --- !u!224 &224857453554369028
 RectTransform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1756928655405884}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}

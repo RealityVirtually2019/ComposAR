@@ -10,7 +10,7 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1921614828998160}
-  m_IsPrefabAsset: 1
+  m_IsPrefabParent: 1
 --- !u!1 &1278475485269956
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,10 +157,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1869515094399752}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59bd07b5b97dd4cd49b2ba5d3c0c60af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DefaultToAR: 1
+  m_Script: {fileID: 2032473616, guid: 2935917a6594c42ae959ebec929f2e49, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  DefaultToAR: 0
 --- !u!114 &114374907198463900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -169,15 +169,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1921614828998160}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bbadb45f24f34bf78a79382560b2883, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Script: {fileID: -1466178690, guid: 2935917a6594c42ae959ebec929f2e49, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
   ApiKey: 1234567890
-  Id: composar
-  DefaultInventoryItems:
-  - composar.cube
-  - composar.camera
-  - composar.lamp
+  Id: demo
+  MapGestureEnabled: 1
+  ViewToggleGestureEnabled: 1
+  DefaultInventoryItems: []
 --- !u!114 &114614181178316404
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -186,7 +185,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1278475485269956}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdd334b8007e04520977f26c60722dbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Script: {fileID: 1938302109, guid: 2935917a6594c42ae959ebec929f2e49, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
   TargetPlatform: 9
